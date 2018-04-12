@@ -1,0 +1,378 @@
+﻿@using ICAS.Models.ClientPortalModel
+@model ICASStacks.APIObjs.ChurchServiceAttendanceRemittanceReportObj
+
+
+@if (Model.RemittanceDetailReport == null)
+{
+    return;
+}
+
+
+@{
+    
+    var clientChurchData = MvcApplication.GetClientChurchData(User.Identity.Name) ?? new ClientChurchData();
+    var logoSrc = clientChurchData.LogoPath + clientChurchData.Logo;
+
+    if (clientChurchData.Username == null || clientChurchData.ChurchId < 1)
+    {
+        logoSrc = "~/Images/logo-ultima.png";
+    }
+}
+
+
+
+
+@if (Model.RemittanceType == 1)
+{
+    
+    @*<div class="clearfix">
+
+        <div style="float: left">
+            <a href="@Url.Action("Index", "Home", new { Area = "" })" class="site_title"><img src="@Url.Content(logoSrc)" width="81" height="81"></a>
+            <h5>
+                Attendance &amp; Collection
+            </h5>
+        </div>
+        <div style="float: right">
+            <h5>
+                <small>@Model.DateRange</small>
+            </h5>
+        </div>
+    </div>
+    <hr>*@
+
+
+    <table id="datatable-buttons" class="table table-striped table-bordered fixed" cellspacing="0" width="100%">
+        <thead class="bg-faded">
+            
+            @*<tr>
+                <td colspan="6">
+
+                </td>
+            </tr>*@
+
+            <tr>
+                <th>Date Service Held</th>
+                <th>Day (Service)</th>
+                <th>Men</th>
+                <th>Women</th>
+                <th>Children</th>
+                <th>Total</th>
+                <th>Preacher</th>
+                @*<th rowspan="1">Monetary Total</th>*@
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var col in Model.RemittanceDetailReport.RemittanceChurchServiceDetails)
+            {
+                <tr>
+                    <td>
+                        @col.DateServiceHeld
+                    </td>
+                    @if (col.ChurchServiceTypeId == 1)
+                    {
+                        <th>
+                            @col.ChurchServiceTypeName
+                        </th>
+                    }
+                    else
+                    {
+                        <td>
+                            @col.ChurchServiceTypeName
+                        </td>
+                    }
+                    
+                    <td>
+                        @col.RemittanceChurchServiceAttendeeDetail.NumberOfMen
+                    </td>
+                    <td>
+                        @col.RemittanceChurchServiceAttendeeDetail.NumberOfWomen
+                    </td>
+                    <td>
+                        @col.RemittanceChurchServiceAttendeeDetail.NumberOfChildren
+                    </td>
+                    <td>
+                        @col.RemittanceChurchServiceAttendeeDetail.TotalAttendee
+                    </td>
+                    <td>
+                        @col.Preacher
+                    </td>
+                </tr>
+            }
+            
+            <tr>
+                <th style="background-color: white; color: white">zzzz</th>
+                @*<th></th>*@
+                <th>Total</th>
+                <th>@Model.RemittanceChurchServiceMonthlyTotalAttendee.TotalMen</th>
+                <th>@Model.RemittanceChurchServiceMonthlyTotalAttendee.TotalWomen</th>
+                <th>@Model.RemittanceChurchServiceMonthlyTotalAttendee.TotalChildren</th>
+                <th></th>
+                <th></th>
+            </tr>
+            
+            @*<tr>
+                <th></th>
+                <th>-</th>
+                <th>-</th>
+                <th>-</th>
+                <th>-</th>
+                <th>-</th>
+                <th>-</th>
+                <th></th>
+            </tr>*@
+            
+            <tr>
+                <th style="background-color: white; color: white">zzzz</th>
+                <th>Average Attendance</th>
+                <th>Men</th>
+                <th>Women</th>
+                <th>Children</th>
+                <th>Total</th>
+                <th ></th>
+            </tr>
+            @{
+                foreach (var avergaeAttendee in Model.RemittanceChurchServiceAverageAttendanceDetail)
+                {
+                    <tr>
+                        <td>zzzzz</td>
+                        <td>@avergaeAttendee.ServiceName</td>
+                        <td>@avergaeAttendee.AverageAttendeeMen</td>
+                        <td>@avergaeAttendee.AverageAttendeeWomen</td>
+                        <td>@avergaeAttendee.AverageAttendeeChildren</td>
+                        <td>@avergaeAttendee.TotalAverageAttendee</td>
+                        <td></td>
+                    </tr>
+                }
+            }
+            
+            @*<tr>
+                
+                <td>zzzzz</td>
+                <td>ff</td>
+                <td>ff</td>
+                <td >MONETARY TOTAL</td>
+                <td>ff</td>
+                <td>f</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>zzzzz</td>
+                <td colspan="5">
+                    MINSTIER TITHE
+                    100%
+                    87.5% N
+                    CONGREGATION'S TITHE
+                    100%
+                    79% N
+
+                    THANKSGIVING
+                    N750
+
+                    SUNDAY LOVE OFFERING
+                    N902
+                    SUNDAY SCHL OFFERING
+                    N200
+
+                    CHILDRREN/TEENS OFFERING
+                    N
+                    CRM OFFERING
+                    N2,016
+                    FIRST FRUIT
+                    NA
+                    AFRICAN MISSION
+                    NA
+                    HOUSE FELLOWSHIP OFFERING
+                    N
+                    GOSPEL FUND
+                    N150
+                    OTHERS
+                    N4,295
+
+                </td>
+               
+               
+            </tr>*@
+        </tbody>
+
+    </table>
+    
+    
+    <div class="row">
+        
+        <div class="col-sm-12">
+            <h4 class="page-title"> MONETARY TOTALS</h4>
+        </div>
+    </div>
+    <hr/>
+    
+    
+    <table class="table m-t-30">
+        
+        <thead class="bg-faded">
+            <tr>
+                <th>#Collection</th>
+                <th>Percentage (%)</th>
+                <th>Amount (#)</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @{
+                var collectionMonetaryTotals = Model.CollectionTypeMonetaryTotals;
+                foreach (var colMon in collectionMonetaryTotals)
+                {
+                    if (@colMon.MonetaryTotalChurchStructureTypes.AmountRemitted > 0)
+                    {
+                        var percent = (@colMon.MonetaryTotalChurchStructureTypes.Percent * 100);
+                        <tr>
+                            <td>@colMon.CollectionTypeName</td>
+                            <td>@percent</td>
+                            <td>@colMon.MonetaryTotalChurchStructureTypes.AmountRemittedCurrency</td>
+                        </tr>  
+                    }
+                          
+                }
+            }
+
+        </tbody>
+    </table>
+}
+else
+{
+
+    @*<div class="clearfix">
+
+        <div style="float: left">
+            <a href="@Url.Action("Index", "Home", new { Area = "" })" class="site_title"><img src="@Url.Content(logoSrc)" width="81" height="81"></a>
+            <h5>
+                Attendance &amp; Collection
+            </h5>
+        </div>
+        <div style="float: right">
+            <h5>
+                <small>@Model.DateRange</small>
+            </h5>
+        </div>
+    </div>
+    <hr>*@
+    
+    <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead class="bg-faded">
+            
+            <tr>
+                <td># Collection</td>
+                @*<td></td>*@
+                @foreach (var col in Model.RemittanceDetailReport.CollectionRemittanceDetails[0].CollectionRemittanceChurchStructureType)
+                {
+                    @*if (col.AmountRemitted > 0)
+                    {
+                         <td>@col.ChurchStructureTypeName</td>
+                    }*@
+                    <td>@col.ChurchStructureTypeName</td>
+                    
+                }
+                @*<td>Total Remittance</td>*@
+                <td>Total Amount Captured</td>
+                <td>Branch Income</td>
+            </tr>
+        </thead>
+        
+        <tbody>
+            
+            
+            @{
+                var collectionStructureTotals = Model.ChurchStructureTypeCollectionTotals;
+            }
+
+            @foreach (var col in Model.RemittanceDetailReport.CollectionRemittanceDetails)
+            {
+                <tr>
+                    <td>
+                        @col.CollectionTypeName
+                    </td>
+                    @*<td></td>*@
+                    
+                    @foreach (var structure in col.CollectionRemittanceChurchStructureType)
+                    {
+                        <td>
+                            @structure.AmountRemitted
+                        </td>
+                        
+                        @*if (structure.AmountRemitted > 0)
+                        {
+                             <td>@structure.AmountRemitted</td>
+                        }*@
+                    }
+                    @*<td>
+                        @col.TotalPercentRemitted
+                    </td>*@
+                    <td>
+                        @col.TotalMonthlyCaptured
+                    </td>
+                    <td>
+                        @col.TotalBalanceLeft
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>TOTAL</th>
+                @*<td style="background-color: white; color: white">z4567</td>*@
+                @foreach (var total in collectionStructureTotals)
+                {
+                    <th>@total.TotalCollectionAmountRemitted</th>
+                }
+                @*<th>@Model.TotalMonthlyAmountRemitted</th>*@
+                <th>@Model.TotalMonthlyAmountCaptured</th>
+                <th>@Model.TotalMonthlyBalanceLeft</th>
+                @*<th>5000</th>
+                <th>23000</th>
+                <th>43000</th>
+                <th>23000</th>
+                <th>43000</th>*@
+            </tr>
+
+        </tbody>
+
+    </table>
+}
+
+
+
+
+<hr>
+
+<div class="hidden-print">
+    <div style="float: right">
+        <a href="javascript:window.print()" class="btn btn-dark waves-effect waves-light"><i class="fa fa-print"></i></a>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //Buttons examples
+        var table = $('#datatable-buttons').DataTable({
+            lengthChange: false,
+            buttons: ['copy', 'excel', 'pdf'],
+            "pageLength": 100,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            "orderCellsTop": true
+            
+        });
+        
+        //$('#example').dataTable({
+        //    "pageLength": 50
+        //});
+
+        table.buttons().container()
+            .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    });
+
+</script>

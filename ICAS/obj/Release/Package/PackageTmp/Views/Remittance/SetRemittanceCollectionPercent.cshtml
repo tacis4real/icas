@@ -1,0 +1,156 @@
+﻿@model ICASStacks.APIObjs.ClientChurchCollectionTypeSettingObjs
+
+@{
+    ViewBag.Title = "SetRemittanceCollectionPercent";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var singleError = ViewBag.Error as string;
+    var errors = ViewBag.Errors as List<string>;
+}
+
+
+<!-- Page-Title -->
+@*<div class="row">
+    <div class="col-sm-12">
+
+        <div class="pull-right" style="margin-top: 12px">
+            <a href="@Url.Action("Index", "Remittance")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Compute Remittance
+            </a>
+        </div>
+
+        <h4 class="page-title"> Set Remittance Collection Percentages</h4>
+    </div>
+</div>*@
+
+
+ <!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-group pull-right m-t-15">
+            <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light"
+                    data-toggle="dropdown" aria-expanded="false">
+                Remittance Options <span class="m-l-5">
+                    <i class="fa fa-cog"></i>
+                </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="@Url.Action("SetRemittanceCollectionPercent", "Remittance", new { Area = "" })">
+                    Collection Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("CompareRemittance", "Remittance", new { Area = "" })">
+                    Graphical Comparison
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("Index", "Remittance", new { Area = "" })">
+                    Compute
+                </a>
+               
+            </div>
+        </div>
+        <h4 class="page-title">Set Remittance Collection Percentages</h4>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card-box" style="padding: 0 60px">
+
+            <form role="form" action="@Url.Action("SetRemittanceCollectionPercent", "Remittance")" data-parsley-validate method="post">
+
+                @{
+                    if (errors != null && errors.Any())
+                    {
+                        <div class="bs-callout bs-callout-danger ">
+
+                            <h4>Error!</h4>
+                            @{
+                        foreach (var error in errors)
+                        {
+                            <p>@Html.Raw(error)</p>
+                        }
+                            }
+                        </div>
+                    }
+
+
+                    if (!string.IsNullOrEmpty(singleError) && singleError.Length > 0)
+                    {
+                        <div class="bs-callout bs-callout-danger">
+                            <h4>Error!</h4>
+                            <p>@Html.Raw(singleError)</p>
+                        </div>
+                    }
+                }
+
+                @Html.HiddenFor(m => m.ClientChurchId)
+                @Html.HiddenFor(m => m.ClientChurchColletionTypeId)
+                @*@Html.HiddenFor(m => m.ChurchId)*@
+
+                @{
+                    var collections = Model.ClientChurchCollectionStructureTypes;
+                }
+
+                <div class="row remittance-setting-board">
+
+                    @for (int j = 0; j < collections.Count; j++)
+                    {
+
+                        int i = j;
+                        var structures = Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs;
+
+                        @Html.HiddenFor(m => Model.ClientChurchCollectionStructureTypes[i].CollectionTypeId)
+                        @Html.HiddenFor(m => Model.ClientChurchCollectionStructureTypes[i].CollectionRefId)
+                        @Html.HiddenFor(m => Model.ClientChurchCollectionStructureTypes[i].Name)
+
+                        <div class="form-group row" style="margin-bottom: 0">
+                            <h5 class="remittance-setting-h">@Model.ClientChurchCollectionStructureTypes[i].Name</h5>
+                        </div>
+
+                        <div class="row remittance-setting-structures">
+
+                            @for (int l = 0; l < structures.Count; l++)
+                            {
+                                int k = l;
+                                @Html.HiddenFor(m => Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs[k].ChurchStructureTypeId)
+                                @Html.HiddenFor(m => Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs[k].Name)
+                                <div class="col-xs-2 col-sm-2">
+                                    <div class="form-group">
+
+                                        <div class="col-xs-12 col-sm-12">
+                                            <label for="@Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs[k].ChurchStructureTypeId" class="col-xs-6 form-control-label" style="font-size: 12px">
+                                                @Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs[k].Name
+                                            </label>
+                                            @Html.TextBoxFor(m => Model.ClientChurchCollectionStructureTypes[i].ChurchStructureTypeObjs[k].Percent, new { @type = "number", @min = "0", @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+
+                    }
+
+                </div><!-- end row -->
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="form-group clearfix">
+                            <div>
+                                <br />
+                                <button type="submit" class="btn btn-block btn-lg btn-success waves-effect waves-light">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+
+            </form>
+        </div>
+
+    </div>
+</div>

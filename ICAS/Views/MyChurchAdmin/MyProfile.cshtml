@@ -1,0 +1,208 @@
+﻿@using WebCribs.TechCracker.WebCribs.TechCracker
+@model ICAS.Models.ClientPortalModel.ClientChurchUserProfileInfo
+
+@{
+    ViewBag.Title = "MyProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="pull-right" style="margin-top: 12px">
+            <a href="@Url.Action("Index", "ChurchServiceAttendance")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Attendance List
+            </a>
+        </div>
+
+        <h4 class="page-title"> Change My Profile</h4>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-12">
+
+
+        <div class="card-box" style="padding: 40px 120px">
+
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "changeClientAdminUserProfile", data_parsley_validate = "" }))
+            {
+
+                @Html.AntiForgeryToken()
+                @*@Html.ValidationSummary(true)*@
+
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.ClientChurchProfileId)
+                @Html.Hidden("Password", "Password$")
+                @Html.Hidden("ConfirmPassword", "Password$")
+
+                var errorMessage = ViewBag.Error as string;
+                var successMessage = ViewBag.Reply as string;
+                var ret = ViewBag.UpdateSucceed as string;
+
+
+
+                if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+                {
+                    <div class="row">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h5>Error!</h5>
+                            <p>@Html.Raw(errorMessage)</p>
+                        </div>
+                    </div>
+                }
+
+
+                if (!string.IsNullOrEmpty(ret))
+                {
+                    if (DataCheck.IsNumeric(ret))
+                    {
+                        if (int.Parse(ret) == 1)
+                        {
+                            <div class="row">
+                                <div class="alert alert-success" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5>Success!</h5>
+                                    <p>Your Profile Was Updated Successfully</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="FullName">Last Name</label>
+                            <div>
+                                <input type="text" class="form-control" value="@Model.FullName" id="FullName" name="FullName" required="" placeholder="Full Name" data-parsley-required-message="Please enter your Full name">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group clearfix">
+                            <label for="SexId">Gender</label>
+                            <div>
+                                <select name="SexId" id="ClientAdminSexId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Gender is required"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group clearfix">
+                            <label for="MobileNo">Mobile Number</label>
+                            <div>
+                                <input type="text" class="form-control" value="@Model.MobileNo" id="MobileNo" name="MobileNo" required="" placeholder="Mobile Number" data-parsley-required-message="Please enter your Mobile Number">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="Email">Email</label>
+                            <div>
+                                <input type="text" class="form-control" readonly="readonly" value="@Model.Email" id="Email" name="Email" required="" placeholder="Email" data-parsley-required-message="Please enter your Email">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="UserName">User Name</label>
+                            <div>
+                                <input type="text" class="form-control" readonly="readonly" value="@Model.UserName" id="UserName" name="UserName" required="" placeholder="User Name" data-parsley-required-message="Please enter your User Name">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="Roles">My Role(s)</label>
+                            <div>
+                                @Html.DisplayFor(model => model.Roles)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <div>
+                                <br />
+                                <button type="submit" class="btn btn-block btn-lg btn-custom waves-effect waves-light">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*<div class="col-xs-12 col-sm-6">
+                        <div class="form-group float-right clearfix">
+                            <div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>*@
+
+                </div>
+            }
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#changeClientAdminUserProfile').parsley().on('field:validated', function () {
+                var ok = $('.parsley-error').length === 0;
+                $('.bs-callout-danger').toggleClass('hidden', ok);
+            });
+
+            loadSex();
+        });
+
+
+        function loadSex() {
+            $.getJSON("@Url.Action("GetSex", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.SexId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#ClientAdminSexId").html(items);
+            });
+        }
+
+    </script>
+
+}

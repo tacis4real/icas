@@ -1,0 +1,112 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using ICASStacks.DataContract.BioEnroll;
+using ICASStacks.StackService;
+using WebAdminStacks.APIObjs;
+using WebAdminStacks.APIs;
+
+namespace ICAS.Areas.Admin.Controllers.Framework
+{
+    public class TerminalAPIController : Controller
+    {
+
+
+
+        [HttpPost]
+        [Route("bioEnumerator/DataKiosk/AuthorizeStationAccess")]
+        public JsonResult AuthorizeStationAccess(StationRegObj appRegObj)
+        {
+
+            var resp = new StationRespObj
+            {
+                ResponseStatus = new ResponseStatus
+                {
+                    IsSuccessful = false,
+                    Message = new ResponseMessage
+                    {
+                        FriendlyMessage = "Unable to process your registration. Please try later",
+                        TechnicalMessage = "Invalid / Empty Registration Object"
+                    }
+                }
+            };
+
+            try
+            {
+
+                if (appRegObj == null)
+                {
+                    return Json(resp, JsonRequestBehavior.AllowGet);
+                }
+                resp = ServiceChurch.RegisterStation(appRegObj);
+                return Json(resp, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                resp.ResponseStatus.Message.FriendlyMessage = "Unable to process your registration. Please try later";
+                resp.ResponseStatus.Message.TechnicalMessage = "Error: " + ex.Message;
+                return Json(resp, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("api/StationUser/Users")]
+        public JsonResult GetUserData()
+        {
+
+            try
+            {
+                var users = PortalUser.GetUserList() ?? new List<RegisteredUserReportObj>();
+                return Json(users, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+        
+
+        [HttpGet]
+        [Route("api/StationUser/GetRemoteUserInfos")]
+        public JsonResult GetRemoteUserInfos()
+        {
+
+            try
+            {
+
+                var users = ServiceChurch.GetRemoteUserInfos() ?? new List<RemoteUserInfo>();
+                return Json(users, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+        
+
+        [HttpGet]
+        [Route("api/StationUser/GetRemoteUserInformations")]
+        public JsonResult GetRemoteUserInformations()
+        {
+
+            try
+            {
+
+                var users = ServiceChurch.GetRemoteUserInformations() ?? new RemoteUserInformation();
+                return Json(users, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+
+	}
+}

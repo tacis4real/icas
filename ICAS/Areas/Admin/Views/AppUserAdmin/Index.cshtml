@@ -1,0 +1,229 @@
+﻿@model IEnumerable<WebAdminStacks.APIObjs.RegisteredUserReportObj>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Start content -->
+<div class="content">
+    
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-box">
+                    <h4 class="page-title float-left">Users</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+        
+        <div class="row">
+            <div class="col-xl-12" style="margin-bottom: 5px">
+                <a href="@Url.Action("AddPortalUser", "AppUserAdmin", new { Area = "Admin" })" class="btn btn-custom waves-effect waves-light pull-right" >
+                    Create User Profile
+                </a>
+            </div>
+        </div>
+        
+        <div class="row">
+            
+            <div class="col-12">
+
+                <div class="card-box table-responsive">
+                    
+                    @{
+                        
+                        var errorMessage = ViewBag.Error as string;
+                        var successMessage = ViewBag.Reply as string;
+                        if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+                        {
+                            <div class="row">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5>Error!</h5>
+                                    <p>@Html.Raw(errorMessage)</p>
+                                </div>
+                            </div>
+                        }
+
+
+                        if (!string.IsNullOrEmpty(successMessage) && successMessage.Length > 1)
+                        {
+
+                            <div class="row">
+                                <div class="alert alert-success" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5>Success!</h5>
+                                    <p>@Html.Raw(successMessage)</p>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                    
+
+                    <table id="datatable-admin-users" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div>Surname</div>
+                                </th>
+                                <th>
+                                    <div>Other Names</div>
+                                </th>
+                                <th>
+                                    <div>Username</div>
+                                </th>
+                                <th>
+                                    <div>Email</div>
+                                </th>
+                                <th>
+                                    <div>Mobile Number</div>
+                                </th>
+                                <th>
+                                    <div>Roles</div>
+                                </th>
+                                <th>
+                                    <div>Actions</div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Surname</td>
+                                        <td>@item.Othernames</td>
+                                        <td>@item.Username</td>
+                                        <td>@item.Email</td>
+                                        <td>@item.MobileNumber</td>
+                                        <td>@string.Join(", ", item.MyRoles) </td>
+                                        
+                                        <td>
+
+                                            <div class="btn-group m-b-20">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle  waves-effect" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span> </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="javascript: window.location.href = '@Url.Action("ModifyPortalUser", "AppUserAdmin", new { id = @item.UserId })';">Edit</a>
+                                                        
+                                                        @*<a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 1 }, null))';">
+                                                            Reset User Password
+                                                        </a>
+                                                        
+                                                        <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 1 }, null))';">
+                                                            Lock User Account
+                                                        </a>
+                                                        
+                                                        <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 1 }, null))';">
+                                                            Lock User Account
+                                                        </a>*@
+
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="modifyUserInfo(@item.UserId, 1)">
+                                                            Reset User Password
+                                                        </a>
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="modifyUserInfo(@item.UserId, 2)">
+                                                            Lock User Account
+                                                        </a>
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="modifyUserInfo(@item.UserId, 3)">
+                                                            Un-Lock User Account
+                                                        </a>
+                                                        
+                                                        
+                                                        @*<a class="dropdown-item waves-effect waves-light m-r-5 m-b-10" data-animation="flash" data-plugin="custommodal" data-overlayspeed="100" data-overlaycolor="#36404a"
+                                                           href="javascript:void(0)" onclick="javascript: window.location.href = '@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 1 }, null) )';">
+                                                            Flash
+                                                        </a>*@
+                                                        
+                                                        
+                                                        
+
+                                                        @*<a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 1 }, null))';">
+                                                            Reset User Password
+                                                        </a>
+                                                        <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 2 }, null))';">
+                                                            Lock User Account
+                                                        </a>
+                                                        <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Html.Raw(@Url.Action("ChangeUserStatus", "AppUserAdmin", new { userId = @item.UserId, caller = 3 }, null))';">
+                                                            Un-Lock User Account
+                                                        </a>*@
+
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- container -->
+
+</div> 
+<!-- content -->
+
+
+ <!-- Modal -->
+<div id="changePortalUserStatus" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <span id="changePortalUserStatusModal"></span>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            //Buttons examples
+            var table = $('#datatable-admin-users').DataTable({
+                lengthChange: false,
+                buttons: ['copy', 'excel', 'pdf']
+            });
+
+            table.buttons().container()
+                .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+        });
+        
+        
+
+        function modifyUserInfo(userId, callerId) {
+            if (userId === "" || callerId < 1 || callerId > 3) return;
+            $.ajax({
+                url: '@Url.Action("ChangeUserStatus", "AppUserAdmin")/?userId=' + userId + "&callerId=" + callerId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#changePortalUserStatusModal').html(data);
+                    $('#changePortalUserStatus').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+
+}

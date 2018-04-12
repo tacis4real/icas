@@ -1,0 +1,17 @@
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\obj\Debug\ICASStacks.csprojResolveAssemblyReference.cache
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\ICASStacks.dll.config
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\ICASStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\ICASStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\EntityFramework.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\EntityFramework.SqlServer.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\Newtonsoft.Json.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\WebAdminStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\WebCribs.TechCracker.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\WebAdminStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\EntityFramework.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\EntityFramework.SqlServer.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\bin\Debug\Newtonsoft.Json.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\obj\Debug\ICASStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\obj\Debug\ICASStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\obj\Debug\ICASStacks.DataManager.Migration.migration1.resources
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\ICASStacks\obj\Debug\ICASStacks.csproj.GenerateResource.Cache

@@ -1,0 +1,268 @@
+﻿@using ICAS.Models.ClientPortalModel
+
+@{
+    ViewBag.Title = "CompareRemittance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@{
+
+    var clientChurchData = MvcApplication.GetClientChurchData(User.Identity.Name) ?? new ClientChurchData();
+    var logoSrc = clientChurchData.LogoPath + clientChurchData.Logo;
+
+    if (clientChurchData.Username == null || clientChurchData.ChurchId < 1)
+    {
+        logoSrc = "~/Images/logo-ultima.png";
+    }
+}
+
+
+
+
+ <!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-group pull-right m-t-15">
+            <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light"
+                    data-toggle="dropdown" aria-expanded="false">
+                Remittance Options <span class="m-l-5">
+                    <i class="fa fa-cog"></i>
+                </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="@Url.Action("SetRemittanceCollectionPercent", "Remittance", new { Area = "" })">
+                    Collection Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("CompareRemittance", "Remittance", new { Area = "" })">
+                    Graphical Comparison
+                </a>
+
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("Index", "Remittance", new { Area = "" })">
+                    Compute
+                </a>
+            </div>
+        </div>
+        <h4 class="page-title">Remittance Graphical Comparison</h4>
+    </div>
+</div>
+
+
+
+<div class="row">
+
+    <div class="col-12">
+
+        <div class="card-box table-responsive">
+            
+            
+            <div class="panel-body" style="padding: 0 60px">
+
+
+                <div class="row">
+
+                    <!-- First Month Start here -->
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+
+                        <div class="row title">
+
+                            <div class="col-md-12">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
+                                    <h4>First Month</h4>
+                                    <input type="text" class="form-control has-feedback-left" id="dateRange1" name="dateRange">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- First Month End here -->
+                    <!-- Second Month Start here -->
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+
+                        <div class="row title">
+                            <div class="col-md-12">
+                                <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right">
+                                    <h4>Second Month</h4>
+                                    <input type="text" class="form-control has-feedback-left" id="dateRange2" name="dateRange">
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                    <!-- Second Month End here -->
+                </div>
+
+                <div class="text-center" id="loader">
+                    <div class="diamond-custom">
+                        <button type="button" id="compare-remittance" class="btn btn-block btn-lg btn-success waves-effect waves-light">Compare</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <hr>
+
+
+
+                <!-- end row -->
+                <div class="m-h-50"></div>
+
+                <div class="row">
+
+
+                    <!-- First Month Start here -->
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+
+                        <div class="p-20-custom" style="border: 1px solid #ccc; height: 400px; margin-bottom: 10px">
+
+                        </div>
+
+                    </div>
+                    <!-- First Month End here -->
+                    <!-- Second Month Start here -->
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+
+                        <div class="p-20-custom" style="border: 1px solid #ccc; height: 400px; margin-bottom: 10px">
+
+                        </div>
+
+                    </div>
+                    <!-- Second Month End here -->
+
+
+
+                </div>
+
+                <hr>
+                <div class="hidden-print">
+                    <div class="float-right">
+                        <a href="javascript:window.print()" class="btn btn-dark waves-effect waves-light"><i class="fa fa-print"></i></a>
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            
+            
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        var startDate;
+        var endDate;
+        
+        var todayDateTime = '@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")';
+        var userprefs = {
+            start: moment(todayDateTime).format('DD-MM-YYYY'),
+            end: moment(todayDateTime).format('DD-MM-YYYY'),
+        };
+
+        var d = {
+            opens: "left",
+            locale: {
+                format: "DD-MM-YYYY"
+            },
+            startDate: userprefs.start,
+            endDate: userprefs.end
+        };
+
+        $(document).ready(function () {
+
+            $('#dateRange1').daterangepicker(d, function (start, end, label) {
+                //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                //var remittanceType = $("input[name='remittanceType']:checked").val();
+
+               
+                //alert("Please select the remittance type for the Selected Date Range");
+                //getGraph(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+
+                startDate = (start.format('DD-MM-YYYY'));
+                endDate = (end.format('DD-MM-YYYY'));
+            });
+            
+            $('#dateRange2').daterangepicker(d, function (start, end, label) {
+                //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                //var remittanceType = $("input[name='remittanceType']:checked").val();
+
+                var remittanceType = $("input[name='remittanceType']:checked").val();
+                if (remittanceType == '' || remittanceType < 1 || remittanceType > 2) {
+                    alert("Please select the remittance type for the Selected Date Range");
+                    return;
+                }
+
+                //alert("Please select the remittance type for the Selected Date Range");
+                getGraph(remittanceType, start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+            });
+
+
+        });
+
+        $('#compare-remittance').click(function () {
+            
+            if (typeof startDate != 'undefined' && typeof endDate != 'undefined' && startDate != null & endDate != null) {
+                startDate = encodeURIComponent(startDate);
+                endDate = encodeURIComponent(endDate);
+            } else {
+                startDate = encodeURIComponent(userprefs.start);
+                endDate = encodeURIComponent(userprefs.end);
+            }
+
+            alert("First Month: " + "Start Date: " + startDate + " End Date: " + endDate);
+        });
+        
+        
+        
+       
+
+
+
+        function getGraph(type, start, end) {
+           
+            if (typeof start != 'undefined' && typeof end != 'undefined' && start != null & end != null) {
+                start = encodeURIComponent(start);
+                end = encodeURIComponent(end);
+            } else {
+                start = encodeURIComponent(userprefs.start);
+                end = encodeURIComponent(userprefs.end);
+            }
+            $.ajax({
+                url: '@Url.Action("RemittanceDetail", "Remittance")/?remittanceType=' + type + "&start=" + start + "&end=" + end,
+                dataType: "html",
+                success: function (data) {
+
+                    $('#report-logo').show();
+                    $('#loader').hide();
+                    $('#remittance').html(data);
+                }
+            });
+        }
+
+
+        function churchServiceAttendanceRemittanceDetail(churchServiceAttendanceRemittanceId) {
+            if (churchServiceAttendanceRemittanceId === "") return;
+            $.ajax({
+                url: '@Url.Action("RemittanceDetail", "Remittance")/?churchServiceAttendanceRemittanceId=' + churchServiceAttendanceRemittanceId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#churchServiceAttendanceRemittanceDetailModal').html(data);
+                    $('#churchServiceAttendanceRemittanceDetail').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+
+}
+

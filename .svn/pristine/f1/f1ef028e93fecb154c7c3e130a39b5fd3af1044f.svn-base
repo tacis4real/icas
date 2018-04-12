@@ -1,0 +1,247 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ICASStacks.DataContract.BioEnroll;
+using ICASStacks.Infrastructure;
+using ICASStacks.Infrastructure.Contract;
+using ICASStacks.Repository.Helpers;
+using WebCribs.TechCracker.WebCribs.TechCracker;
+
+namespace ICASStacks.Repository
+{
+    internal class TerminalAPIRepository
+    {
+
+        private readonly IIcasRepository<ClientStation> _repository;
+        private readonly IIcasRepository<UserProfile> _userProfileRepository;
+        private readonly IIcasRepository<StaffUser> _userRepository;
+        private readonly IIcasRepository<StationReg> _stationRegRepository; 
+        private readonly IcasUoWork _uoWork;
+
+        public TerminalAPIRepository()
+        {
+            _uoWork = new IcasUoWork();
+            _userProfileRepository = new IcasRepository<UserProfile>(_uoWork);
+            _userRepository = new IcasRepository<StaffUser>(_uoWork);
+            _repository = new IcasRepository<ClientStation>(_uoWork);
+            _stationRegRepository = new IcasRepository<StationReg>(_uoWork);
+        }
+
+        internal StationRespObj RegisterStation(StationRegObj stationRegObj)
+        {
+
+            var response = new StationRespObj
+            {
+                ResponseStatus = new ResponseStatus
+                {
+                    Message = new ResponseMessage(),
+                    IsSuccessful = false,
+                }
+            };
+            try
+            {
+                List<ValidationResult> valResults;
+                if (!EntityValidatorHelper.Validate(stationRegObj, out valResults))
+                {
+                    var errorDetail = new StringBuilder();
+                    if (!valResults.IsNullOrEmpty())
+                    {
+                        errorDetail.AppendLine("Following error occurred:");
+                        valResults.ForEachx(m => errorDetail.AppendLine(m.ErrorMessage));
+                    }
+                    else
+                    {
+                        errorDetail.AppendLine("Validation error occurred! Please check all supplied parameters and try again");
+                    }
+
+                    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = errorDetail.ToString();
+                    return response;
+                }
+
+                #region Unused
+
+                //var station = GetStation(stationRegObj.StationKey);
+                //if (station == null || string.IsNullOrEmpty(station.StationName) || station.ClientStationId < 1)
+                //{
+                //    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = "Invalid Station Key";
+                //    return response;
+                //}
+
+                //if (string.Compare(station.StationName.Trim(), corporateInfo.StationName.Trim(), StringComparison.CurrentCultureIgnoreCase) != 0)
+                //{
+                //    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = "Incorrect Station Name";
+                //    return response;
+                //}
+
+                //if (string.Compare(station.StationKey.Trim(), corporateInfo.StationKey.Trim(), StringComparison.CurrentCultureIgnoreCase) != 0)
+                //{
+                //    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = "Incorrect Station Key";
+                //    return response;
+                //}
+
+                //if (station.Status == 2)
+                //{
+                //    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = "This Station is already configured and used";
+                //    return response;
+                //}
+
+                #endregion
+
+                var apiAccessKey = "3924156303";
+
+                var station = new StationReg
+                {
+                    StationKey = stationRegObj.StationKey,
+                    StationName = stationRegObj.StationName,
+                    DeviceId = stationRegObj.DeviceId,
+                    DeviceIP = stationRegObj.DeviceIP,
+                };
+
+                var processedStation = _stationRegRepository.Add(station);
+                _uoWork.SaveChanges();
+                if (processedStation.StationRegId < 1)
+                {
+                    response.ResponseStatus.Message.FriendlyMessage = response.ResponseStatus.Message.TechnicalMessage = "Process Failed! Unable to process hosting information";
+                    return response;
+                }
+                response.ResponseStatus.IsSuccessful = true;
+                response.APIAccessKey = apiAccessKey;
+                response.ClientStationId = processedStation.StationRegId;
+                response.DeviceId = station.DeviceId;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.ResponseStatus.Message.FriendlyMessage = "Processing Error Occurred! Please try again later " + ex.Message;
+                response.ResponseStatus.Message.TechnicalMessage = ex.Message;
+                BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                return response;
+            }
+
+        }
+
+        internal List<RemoteUserInfo> GetRemoteUserInfos()
+        {
+
+            var retItems = new List<RemoteUserInfo>();
+
+            try
+            {
+
+                var userProfiles = _userProfileRepository.GetAll().ToList();
+                if (!userProfiles.Any()) { return retItems; }
+
+                foreach (var userProfile in userProfiles)
+                {
+
+                    if (userProfile == null || userProfile.UserProfileId < 1) continue;
+                    var thisUser = _userRepository.GetById(userProfile.UserProfileId);
+                    if (thisUser == null || thisUser.StaffUserId < 1)
+                    {
+                        continue;
+                    }
+
+                    retItems.Add(new RemoteUserInfo
+                    {
+                        UserProfileInfo = userProfile,
+                        UserInfo = thisUser
+                    });
+
+                }
+
+                return retItems;
+
+            }
+            catch (Exception ex)
+            {
+                BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                return null;
+            }
+        } 
+
+        internal RemoteUserInformation GetRemoteUserInformations()
+        {
+            
+            var retItem = new RemoteUserInformation
+            {
+                UserProfileInfos = new List<UserProfile>(),
+                UserInfos = new List<StaffUser>(),
+                ClientStationInfos = new List<ClientStation>()
+            };
+
+            try
+            {
+
+                var userProfiles = _userProfileRepository.GetAll().ToList();
+                if (!userProfiles.Any()) { return retItem; }
+                
+                var clientHostSettings = _repository.GetAll().ToList();
+                if (!clientHostSettings.Any()) { return retItem; }
+                
+                var users = _userRepository.GetAll().ToList();
+                if (!users.Any()) { return retItem; }
+
+                retItem.UserInfos = users;
+                retItem.UserProfileInfos = userProfiles;
+                retItem.ClientStationInfos = clientHostSettings;
+
+                return retItem;
+
+            }
+            catch (Exception ex)
+            {
+                BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                return null;
+            }
+        }
+
+
+        #region Useful Functions
+
+        private string GenerateStationKey(string fullname, string mobileNo, string stationKey)
+        {
+            try
+            {
+                var deviceCode = Math.Abs(stationKey.GetHashCode()) + "" +
+                                 Math.Abs((fullname.GetHashCode()*mobileNo.GetHashCode()));
+                if (deviceCode.StartsWith("0"))
+                {
+                    deviceCode = deviceCode.Substring(1);
+                }
+                if (deviceCode.Length < 18)
+                {
+                    deviceCode = deviceCode + "" + Math.Abs(DateTime.Now.ToString("yyyy/MMMM/dd").GetHashCode());
+                }
+                deviceCode = deviceCode.Substring(11, 2) + "" + deviceCode.Substring(0, 3) + "" +
+                             deviceCode.Substring(7, 3) + "" + deviceCode.Substring(5, 2);
+                //var serialNo = SerialGeneratorRepository.Generate();
+                var serialNo = 100;
+                var regCode = "";
+                if (serialNo > 0)
+                {
+                    regCode = serialNo + "" +
+                              deviceCode.Substring(0,
+                                  deviceCode.Length - serialNo.ToString(CultureInfo.InvariantCulture).Length);
+                }
+                else
+                {
+                    regCode = deviceCode;
+                }
+                return regCode;
+            }
+            catch (Exception ex)
+            {
+                BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                return null;
+            }
+        }
+
+        #endregion
+
+
+    }
+}

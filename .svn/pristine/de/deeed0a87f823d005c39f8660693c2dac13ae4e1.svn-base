@@ -1,0 +1,400 @@
+﻿@using WebCribs.MVCHelperLibrary
+@model ICASStacks.APIObjs.ClientChurchRegistrationObj
+
+@{
+    ViewBag.Title = "ClientChurch";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var singleError = ViewBag.Error as string;
+    var errors = ViewBag.Errors as List<string>;
+}
+
+
+<!-- Start content -->
+<div class="content">
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-box">
+                    <h4 class="page-title float-left">Setup New Church</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-xl-12" style="margin-bottom: 5px">
+                <a href="@Url.Action("Index", "ClientChurch", new { Area = "Admin" })" class="btn btn-custom waves-effect waves-light pull-right">
+                    Client Lists
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="card-box">
+
+
+
+                    <div class="start-project">
+
+                        <div class="title">
+                            <ul>
+                                <li data-link="basic-data" class="current"><a href="#"><i class="fa fa-pagelines"></i><span>Baisc Info</span></a></li>
+                                <li data-link="contact-data" class=""><a href="#"><i class="fa fa-link"></i><span>Contact Info</span></a></li>
+                                <li data-link="account-data" class=""><a href="#"><i class="fa fa-tags"></i><span>Account Info</span></a></li>
+                                <li data-link="profile-data" class=""><a href="#"><i class="fa fa-file-image-o"></i><span>Profile</span></a></li>
+                                <li data-link="structure-data" class=""><a href="#"><i class="fa fa-file-image-o"></i><span>Structure HeadQuarters</span></a></li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div class="start-content">
+
+                            <form action="@Url.Action(Model.Action, "ClientChurch")" id="createClientChurchForm" method="POST" data_parsley_validate="">
+
+                                @{
+                                    if (errors != null && errors.Any())
+                                    {
+                                        <div class="row">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h5>Error!</h5>
+                                                @{
+                                        foreach (var error in errors)
+                                        {
+                                            <p>@Html.Raw(error)</p>
+                                        }
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                    if (!string.IsNullOrEmpty(singleError) && singleError.Length > 0)
+                                    {
+
+                                        <div class="row">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h5>Error!</h5>
+                                                <p>@Html.Raw(singleError)</p>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+
+                                <!-- Church Basic Info -->
+                                <div id="basic-data" class="form-wizard active">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ChurchId">Parent Church <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForChurch" name="ChurchId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Parent Church is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="Name">Parish Name<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input class="form-control required" type="text" value="@Model.Name" name="Name" id="Name" placeholder="Church name" required="" data-parsley-required-message="Church name is required">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="Pastor"> Pastor-in-Charge<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="text" class="required form-control" value="@Model.Pastor" name="Pastor" id="Pastor" placeholder="Pastor-in-Charge" required="" data-parsley-required-message="Pastor-in-Charge is required">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="Title">Title <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForTitle" name="Title" class="form-control" required="" data-parsley-required-message="Minister-in-Charge Title is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="Sex"> Sex<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select name="Sex" id="Sex" class="form-control" required="" data-parsley-required-message="Gender is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="contact-data" onclick="moveform(this, 'contact-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Church Contact Info -->
+                                <div id="contact-data" class="form-wizard">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="StateOfLocationId"> State of Location<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForStateOfLocation" name="StateOfLocationId" class="form-control" style="width: 100%" required="" data-parsley-required-message="State of location is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.Email"> Email<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="email" class="form-control has-feedback-left" value="@Model.Email" name="Email" id="Email" placeholder="Email" required="" data-parsley-required-message="Email is required">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.PhoneNumber"> Phone Number<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="text" class="form-control has-feedback-left" value="@Model.PhoneNumber" name="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" required="" data-parsley-required-message="Phone number is required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="form-group clearfix">
+                                                <label for="Address"> Contact Address<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <textarea rows="4" placeholder="Address" name="Address" id="Address" class="form-control" required="" data-parsley-required-message="Contact address is required">@Model.Address</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="basic-data" onclick="moveBack(this, 'basic-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="account-data" onclick="moveform(this, 'account-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Church Account Info -->
+                                <div id="account-data" class="form-wizard">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.BankId">Bank <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForBank" name="BankId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Bank name is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.AccountTypeId"> Account Type<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForAccountType" name="AccountTypeId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Account Type is required"></select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchAccount.AccountName"> Account Name<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchAccount.AccountName, new { @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchAccount.AccountNumber"> Account Number<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchAccount.AccountNumber, new { @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="contact-data" onclick="moveBack(this, 'contact-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="profile-data" onclick="moveform(this, 'profile-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Church Profile Info -->
+                                <div id="profile-data" class="form-wizard">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchProfile.Username"> Username<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchProfile.Username, new { @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchProfile.Password"> Password<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchProfile.Password, new { @type = "password", @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchProfile.ConfirmPassword"> Confirm Password<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchProfile.ConfirmPassword, new { @type = "password", @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchProfile.MyRoleIds">Roles <span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.CheckBoxListFor("MyRoleIds", @Html.GetTabRoleListByIds(model => Model.ClientChurchProfile.MyRoleIds, Model.ClientChurchProfile.AllRoles), 6, WebCribs.MVCHelperLibrary.Utilities.RepeatedDirection.Horizontal)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="account-data" onclick="moveBack(this, 'account-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="structure-data" onclick="moveform(this, 'structure-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Church Structure Headquarters Info -->
+                                <div id="structure-data" class="form-wizard">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ChurchStructureParishHeadQuarters[]">Parishes Church </label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForParishHeadQuarters" name="ChurchStructureParishHeadQuarters[]" class="select2 select2-multiple form-control" multiple="multiple" multiple data-placeholder="Choose ..." style="width: 100%"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ClientChurchHeadQuarterChurchStructureTypeId"> HeadQuarter As: </label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForHeadQuarterStructure" name="ClientChurchHeadQuarterChurchStructureTypeId" class="form-control" style="width: 100%"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="profile-data" onclick="moveBack(this, 'profile-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

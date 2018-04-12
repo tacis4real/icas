@@ -1,0 +1,227 @@
+﻿@model IEnumerable<ICASStacks.APIObjs.RegisteredChurchServiceAttendanceReportObj>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        
+        <div class="pull-right" style="margin-top: 12px">
+            <a href="@Url.Action("TakeAttendance", "ChurchServiceAttendance")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Take Attendance
+            </a>
+        </div>
+
+        <h4 class="page-title">Service Attendance Record</h4>
+    </div>
+</div>
+
+@{
+    var errorMessage = ViewBag.Error as string;
+    var successMessage = ViewBag.Reply as string;
+    if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+    {
+        <div class="row">
+            <div class="alert alert-info" role="alert" style="width: 100%">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5>Info!</h5>
+                <p>@Html.Raw(errorMessage)</p>
+            </div>
+        </div>
+
+
+    }
+    if (!string.IsNullOrEmpty(successMessage) && successMessage.Length > 1)
+    {
+        <div class="row">
+            <div class="alert alert-success" role="alert" style="width: 100%">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5>Success!</h5>
+                <p>@Html.Raw(successMessage)</p>
+            </div>
+        </div>
+    
+    
+    
+    }
+
+}
+
+
+<div class="row">
+    
+    
+
+    <div class="col-12">
+        <div class="card-box table-responsive" style="padding: 60px">
+            <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                
+                <thead>
+                    <tr>
+                        <th>Date Service Held</th>
+                        <th>Service</th>
+                        <th>Men</th>
+                        <th>Women</th>
+                        <th>Children</th>
+                        <th>New Convert</th>
+                        <th>First Timer</th>
+                        <th>Total Attendee</th>
+                        <th>Total Amount Captured</th>
+                        <th>
+                            <div>Actions</div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ServiceHeldDate</td>
+                                <td>@item.ServiceName</td>
+                                <td>@item.ServiceAttendanceDetail.NumberOfMen</td>
+                                <td>@item.ServiceAttendanceDetail.NumberOfWomen</td>
+                                <td>@item.ServiceAttendanceDetail.NumberOfChildren</td>
+                                <td>@item.ServiceAttendanceDetail.FirstTimer</td>
+                                <td>@item.ServiceAttendanceDetail.NewConvert</td>
+                                <td>@item.TotalAttendee</td>
+                                <td>@item.TotalCollection</td>
+                                <td>
+                                    <div class="btn-group m-b-20">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle  waves-effect" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span> </button>
+                                            <div class="dropdown-menu">
+                                                
+
+
+                                                @*<a href="javascript:void(0);" onclick="javascript:window.location.href='contactus.aspx'">Contact Us</a>
+                                                <a href="#" onclick="javascript:window.location.href='contactus.aspx'">Contact Us</a>
+                                                
+                                                window.location.href = '@Url.Action("LogOut", "Home")';*@
+
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="javascript: window.location.href = '@Url.Action("ModifyAttendance", "ChurchServiceAttendance", new { id = @item.ChurchServiceAttendanceId })';">Edit</a>
+                                                <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href='@Url.Action("AttendanceInfo", "ChurchServiceAttendance", new { churchServiceAttendanceId = @item.ChurchServiceAttendanceId })'>
+                                                    Info
+                                                </a>
+                                                
+                                                
+                                                @*<a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href="javascript:void(0)" onclick="javascript: window.location.href = '@Url.Action("AttendanceInfo", "ChurchServiceAttendance", new { churchServiceAttendanceId = @item.ChurchServiceAttendanceId })';">
+                                                    Info
+                                                </a>*@
+                                                
+
+                                                @*<a class="dropdown-item" href='@Url.Action("ModifyAttendance", "ChurchServiceAttendance", new { id = @item.ChurchServiceAttendanceId })'>Edit</a>
+                                                <a class="dropdown-item data-animation="fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href='@Url.Action("AttendanceInfo", "ChurchServiceAttendance", new { churchServiceAttendanceId = @item.ChurchServiceAttendanceId })'>
+                                                    Info
+                                                </a>*@
+                                                @*<a class="dropdown-item" href="javascript:void(0)" onclick="churchServiceAttendanceDetail(@item.ChurchServiceAttendanceId)">Info</a>*@
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="churchServiceAttendanceDetail" tabindex="-1" role="dialog" aria-hidden="true">
+    <span id="churchServiceAttendanceDetailModal"></span>
+</div>
+
+    @*<div class="modal-demo" id="churchServiceAttendanceDetail" data-animation="fadein" data-plugin="custommodal">
+        <span id="churchServiceAttendanceDetailModal"></span>
+    </div>*@
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        
+            
+        $(document).ready(function () {
+
+            //Buttons examples
+            var table = $('#datatable-buttons').DataTable({
+                lengthChange: false,
+                buttons: ['copy', 'excel', 'pdf']
+            });
+
+            table.buttons().container()
+                .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+        });
+
+        var todayDateTime = '@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")';
+        var userprefs = {
+            start: moment(todayDateTime).format('DD-MM-YYYY'),
+            end: moment(todayDateTime).format('DD-MM-YYYY'),
+        };
+        var d = {
+            opens: "left",
+            locale: {
+                format: "DD-MM-YYYY"
+            },
+            startDate: userprefs.start,
+            endDate: userprefs.end
+        };
+        $('#dateRange').daterangepicker(d, function (start, end, label) {
+            alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            getGraph(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+        });
+            
+
+        function getGraph(start, end) {
+            //show loading
+            //$(".loading-img").show();
+            //$("#transaction-chart").html("");
+            var jsonurl = '@Url.Action("GetChart", "Chart")';
+            if (typeof start != 'undefined' && typeof end != 'undefined' && start != null & end != null) {
+                jsonurl += '?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end);
+            } else {
+                jsonurl += '?start=' + encodeURIComponent(userprefs.start) + '&end=' + encodeURIComponent(userprefs.end);
+            }
+
+            $.getJSON(jsonurl, function (data) {
+
+            });
+
+        }
+
+            
+
+
+
+        function churchServiceAttendanceDetail(churchServiceAttendanceId) {
+            if (churchServiceAttendanceId === "") return;
+            $.ajax({
+                url: '@Url.Action("AttendanceInfo", "ChurchServiceAttendance")/?churchServiceAttendanceId=' + churchServiceAttendanceId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#churchServiceAttendanceDetailModal').html(data);
+                    $('#churchServiceAttendanceDetail').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+}

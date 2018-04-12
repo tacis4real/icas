@@ -1,0 +1,189 @@
+﻿@using WebCribs.TechCracker.WebCribs.TechCracker
+@model ICAS.Areas.Admin.Models.PortalModel.UserProfileInfo
+
+
+
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span class="display-block float-right" aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title">Edit My Profile</h4>
+        </div>
+        
+        @{
+            
+            var errorMessage = ViewBag.Error as string;
+            var successMessage = ViewBag.Reply as string;
+            var ret = ViewBag.UpdateSucceed as string;
+            if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+            {
+        
+                <div class="bs-callout bs-callout-danger ">
+                    <h4>Error!</h4>
+                    <p>@Html.Raw(errorMessage)</p>
+                </div>
+            }
+            if (!string.IsNullOrEmpty(successMessage) && successMessage.Length > 1)
+            {
+                <div class="bs-callout bs-callout-success ">
+                    <h4>Sucess!</h4>
+                    <p>@Html.Raw(successMessage)</p>
+                </div>
+            }
+            if (!string.IsNullOrEmpty(ret))
+            {
+                if (DataCheck.IsNumeric(ret))
+                {
+                    if (int.Parse(ret) == 1)
+                    {
+                        <div class="bs-callout bs-callout-success ">
+                            <h4>Success!</h4>
+                            <p>Your Profile Was Updated Successfully</p>
+                        </div>
+                    }
+                }
+            }
+        }
+
+        <div class="modal-body" style="padding: 20px 40px">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "changePortalUserProfile", data_parsley_validate = "" }))
+            {
+
+                
+                
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.UserName)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.UserId)
+                @Html.Hidden("Password", "Password$")
+                @Html.Hidden("ConfirmPassword", "Password$")
+                
+                
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="LastName">Last Name</label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.LastName" id="LastName" name="LastName" required="" placeholder="Last Name" data-parsley-required-message="Please enter your LastName">
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="FirstName">First Name</label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.FirstName" id="FirstName" name="FirstName" required="" placeholder="First Name" data-parsley-required-message="Please enter your FirstName">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+                
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="SexId">Gender</label>
+                            <div>
+                                <select name="SexId" id="SexId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Gender is required"></select>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="MobileNo">Mobile Number</label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.MobileNo" id="MobileNo" name="MobileNo" required="" placeholder="Mobile Number" data-parsley-required-message="Please enter your Mobil Number">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+                
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="Email">Email</label>
+                            <div>
+                                <input type="text" class="form-control" readonly="readonly" value="@Model.Email" id="Email" name="Email" required="" placeholder="Email" data-parsley-required-message="Please enter your Email">
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="UserName">User Name</label>
+                            <div>
+                                <input type="text" class="form-control" readonly="readonly" value="@Model.UserName" id="UserName" name="UserName" required="" placeholder="User Name" data-parsley-required-message="Please enter your User Name">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+                
+                
+                <div class="row">
+                    
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="Roles">My Role(s)</label>
+                            <div>
+                                @Html.DisplayFor(model => model.Roles)
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group float-right clearfix">
+                            <div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function (e) {
+        $('#changePortalUserProfile').parsley().on('field:validated', function () {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-danger').toggleClass('hidden', ok);
+
+        });
+
+
+        loadSex();
+
+    });
+    
+
+    function loadSex() {
+        $.getJSON("@Url.Action("GetSex", "Data")", function(data) {
+            var items = "";
+            $.each(data, function(i, item) {
+                if ('@Model.SexId' == item.K) {
+                    items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                } else {
+                    items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                }
+            });
+            $("#SexId").html(items);
+        });
+    }
+</script>

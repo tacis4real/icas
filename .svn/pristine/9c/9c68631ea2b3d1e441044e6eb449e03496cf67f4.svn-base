@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C88CD3D8-4B66-4067-BCB0-D513C839317F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebAdminStacks</RootNamespace>
+    <AssemblyName>WebAdminStacks</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebCribs.TechCracker">
+      <HintPath>..\DLL\WebCribs.TechCracker.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIObjs\Common.cs" />
+    <Compile Include="APIObjs\UserObj.cs" />
+    <Compile Include="APIs\CoreManager.cs" />
+    <Compile Include="APIs\PortalClientRole.cs" />
+    <Compile Include="APIs\PortalClientUser.cs" />
+    <Compile Include="APIs\PortalRole.cs" />
+    <Compile Include="APIs\PortalUser.cs" />
+    <Compile Include="Common\Enums.cs" />
+    <Compile Include="Common\ValidationAttributes.cs" />
+    <Compile Include="DataContract\ClientChurchDevice.cs" />
+    <Compile Include="DataContract\ClientChurchDeviceAccessAuthorization.cs" />
+    <Compile Include="DataContract\ClientChurchLoginActivity.cs" />
+    <Compile Include="DataContract\ClientChurchProfile.cs" />
+    <Compile Include="DataContract\ClientChurchRole.cs" />
+    <Compile Include="DataContract\ClientDevice.cs" />
+    <Compile Include="DataContract\ClientDeviceAccessAuthorization.cs" />
+    <Compile Include="DataContract\ClientLoginActivity.cs" />
+    <Compile Include="DataContract\ClientProfile.cs" />
+    <Compile Include="DataContract\ClientRole.cs" />
+    <Compile Include="DataContract\DeviceAccessAuthorization.cs" />
+    <Compile Include="DataContract\Role.cs" />
+    <Compile Include="DataContract\RoleClient.cs" />
+    <Compile Include="DataContract\RoleNameValue.cs" />
+    <Compile Include="DataContract\User.cs" />
+    <Compile Include="DataContract\UserDevice.cs" />
+    <Compile Include="DataContract\UserLoginActivity.cs" />
+    <Compile Include="DataContract\UserRole.cs" />
+    <Compile Include="DataManager\MigConfig.cs" />
+    <Compile Include="DataManager\Migration\201804100721137_migration1.cs" />
+    <Compile Include="DataManager\Migration\201804100721137_migration1.Designer.cs">
+      <DependentUpon>201804100721137_migration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataManager\Migration\Configuration.cs" />
+    <Compile Include="DataManager\ModelAssistance.cs" />
+    <Compile Include="DataManager\WebAdminStackContext.cs" />
+    <Compile Include="Infrastructure\Contract\IWebAdminContext.cs" />
+    <Compile Include="Infrastructure\Contract\IWebAdminRepository.cs" />
+    <Compile Include="Infrastructure\Contract\IWebAdminUoWork.cs" />
+    <Compile Include="Infrastructure\WebAdminContext.cs" />
+    <Compile Include="Infrastructure\WebAdminRepository.cs" />
+    <Compile Include="Infrastructure\WebAdminUoWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ClientAdminRepository.cs" />
+    <Compile Include="Repository\ClientAdminRoleRepository.cs" />
+    <Compile Include="Repository\ClientChurchRoleRepository.cs" />
+    <Compile Include="Repository\ClientRoleRepository.cs" />
+    <Compile Include="Repository\Helper\BaseExceptionHelper.cs" />
+    <Compile Include="Repository\Helper\EncryptionHelper.cs" />
+    <Compile Include="Repository\Helper\EntityValidatorHelper.cs" />
+    <Compile Include="Repository\Helper\IPHelper.cs" />
+    <Compile Include="Repository\RoleClientRepository.cs" />
+    <Compile Include="Repository\RoleRepository.cs" />
+    <Compile Include="Repository\UserLoginActivityRepository.cs" />
+    <Compile Include="Repository\UserRepository.cs" />
+    <Compile Include="Repository\UserRoleRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataManager\Migration\201804100721137_migration1.resx">
+      <DependentUpon>201804100721137_migration1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

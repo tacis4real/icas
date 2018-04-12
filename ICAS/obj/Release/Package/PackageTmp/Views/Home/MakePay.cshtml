@@ -1,0 +1,250 @@
+﻿@model ICASStacks.APIObjs.ChurchPayeePayObj
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+    <meta name="author" content="Coderthemes">
+
+    <!-- App Favicon -->
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+
+    <!-- App title -->
+    <title>Uplon - Responsive Admin Dashboard Template</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- App CSS -->
+    <link href="~/Content/style.css" rel="stylesheet" type="text/css" />
+
+    
+    
+</head>
+
+<body>
+
+    <div class="account-pages"></div>
+    <div class="clearfix"></div>
+    
+
+    <div class="wrapper-pay-page">
+
+        <div class="text-center m-t-20">
+            <div class="logo">
+                <img src="~/Images/logo-ultima.png" width="60" height="60">
+            </div>
+        </div>
+
+
+        <div class="account-bg">
+            <div class="card-box mb-0">
+
+                <div class="m-t-10 p-20">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h6 class="text-muted m-b-0 m-t-0">Make Pledge</h6>
+                        </div>
+                    </div>
+                    
+                    
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "makePayForm", data_parsley_validate = ""}))
+                    {
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label " for="ChurchId">Denomination (Church)</label>
+                            <div class="col-lg-9">
+                                <select id="ClientPaySelectForChurch" name="ChurchId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Parent Church is required"></select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label " for="StateOfLocationId">Church Location</label>
+                            <div class="col-lg-9">
+                                <select id="ClientPaySelectForStateOfLocation" name="StateOfLocationId" class="form-control" style="width: 100%" required="" data-parsley-required-message="State of location is required"></select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label " for="FullName">Full Name</label>
+                            <div class="col-lg-9">
+                                <input class="form-control" id="FullName" name="FullName" value="@Model.FullName" type="text" required="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <label class="col-lg-3 control-label " for="PhoneNumber">Phone Number</label>
+                            <div class="col-lg-4">
+                                <input class="form-control" id="PhoneNumber" name="PhoneNumber" value="@Model.PhoneNumber" type="text" required="">
+                            </div>
+                            
+                            <label class="col-lg-1 control-label " for="Email">Email</label>
+                            <div class="col-lg-4">
+                                <input class="form-control" id="Email" name="Email" value="@Model.Email" type="text">
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="form-group row">
+                            @*<label class="col-lg-3 control-label " for="StateOfLocationId">Collection</label>
+                            <div class="col-lg-4">
+                                <select id="ClientPaySelectForStateOfLocation" name="StateOfLocationId" class="form-control" style="width: 100%" required="" data-parsley-required-message="State of location is required"></select>
+                            </div>*@
+                            
+                            <label class="col-lg-3 control-label " for="Amount">Amount</label>
+                            <div class="col-lg-9">
+                                <input class="form-control" id="Amount" name="Amount" value="@Model.Amount" type="number" min="0" required="">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div>
+                                    <br />
+                                    <button type="submit" class="btn btn-block btn-lg btn-success waves-effect waves-light">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <!-- end card-box-->
+
+        <div class="m-t-20">
+            <div class="text-center">
+                <p class="text-white">God Bless As You Do So! <a href="pages-login.html" class="text-white m-l-5"><b>Amen</b> </a></p>
+            </div>
+        </div>
+
+    </div>
+    <!-- end wrapper page -->
+
+
+    <script>
+        var resizefunc = [];
+    </script>
+
+    <!-- jQuery  -->
+    <!-- Modernizr js -->
+    <script src="~/Scripts/modernizr.min.js"></script>
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script><!-- Tether for Bootstrap -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/plugins/switchery/switchery.min.js"></script>
+    <script src="~/Scripts/admin/plugins/parsleyjs/parsley.min.js"></script>
+    <!-- App js -->
+    <script src="~/Scripts/jquery.core.js"></script>
+    <script src="~/Scripts/jquery.app.js"></script>
+    
+    <div>
+
+        <script src="~/Scripts/jquery.backstretch.min.js"></script>
+        <script type="text/javascript">
+            $.backstretch([
+                    "../../Images/big/7.png",
+                    "../../Images/big/8.png"
+                    //"./../Images/bg/6.jpg"
+            ], {
+                fade: 1000,
+                duration: 7000
+            });
+        </script>
+    </div>
+
+    @*<script type="text/javascript">
+
+        // <![CDATA[
+        var QTCheckout = QTCheckout || {};
+        var testMode = true;
+        var baseUrl = "";
+        QTCheckout.paymentItems = QTCheckout.paymentItems || [];
+        QTCheckout.paymentItems.push({
+            paymentCode: '95101',
+            extraData: {
+                amount: "200000",
+                buttonSize: 'medium',
+                customerId: "000067",
+                mobileNumber: "08036975694",
+                emailAddress: "ailesanmi@epayplusng.com",
+                redirectUrl: "default",
+                requestReference: "9999876666546565"
+            }
+        });
+        if (testMode == true) baseUrl = "https://pwq.sandbox.interswitchng.com/scripts/quickteller-checkout-min.js?v=";
+        else baseUrl = "https://paywith.quickteller.com/scripts/quickteller-checkout-min.js?v=";
+        if (!QTCheckout.qtScript) {
+            var qtScript = document.createElement('script');
+            qtScript.type = 'text/javascript';
+            qtScript.async = true;
+            qtScript.src = baseUrl + new Date().getDay();
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(qtScript, s);
+            QTCheckout.qtScript = qtScript;
+        }
+        else if (QTCheckout.buildPaymentItemsUI) {
+            QTCheckout.buildPaymentItemsUI();
+        }
+        // ]]>
+
+    </script>*@
+
+    <script type="text/javascript">
+
+        $(document).ready(function (e) {
+            
+            $('#makePayForm').parsley().on('field:validated', function () {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-danger').toggleClass('hidden', ok);
+        });
+
+            LoadParentChurch();
+            LoadState();
+        });
+
+        function LoadParentChurch() {
+            $.getJSON("@Url.Action("GetParentChurches", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                                        @*if ('@Model.ChurchId' == item.K) {
+                    items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                } else {
+                    items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                }*@
+                    items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                });
+                $("#ClientPaySelectForChurch").html(items);
+            });
+        }
+
+        function LoadState() {
+            $.getJSON("@Url.Action("GetStateOfLocations", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                });
+                $("#ClientPaySelectForStateOfLocation").html(items);
+
+            });
+        }
+
+
+    </script>
+
+</body>
+
+
+
+</html>
+
+

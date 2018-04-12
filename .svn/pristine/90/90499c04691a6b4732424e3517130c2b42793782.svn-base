@@ -1,0 +1,5 @@
+﻿@using AwesomeMvc
+@{
+    Layout = "_FieldLayout.cshtml";
+}
+@Html.Awe().MultiLookup("")

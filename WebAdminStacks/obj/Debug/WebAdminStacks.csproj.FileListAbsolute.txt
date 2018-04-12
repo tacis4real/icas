@@ -1,0 +1,12 @@
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\WebAdminStacks.dll.config
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\WebAdminStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\WebAdminStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\EntityFramework.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\EntityFramework.SqlServer.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\WebCribs.TechCracker.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\EntityFramework.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Debug\EntityFramework.SqlServer.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Debug\WebAdminStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Debug\WebAdminStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Debug\WebAdminStacks.DataManager.Migration.migration1.resources
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Debug\WebAdminStacks.csproj.GenerateResource.Cache

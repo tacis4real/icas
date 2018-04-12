@@ -1,0 +1,277 @@
+﻿@using WebCribs.MVCHelperLibrary
+@model ICAS.Areas.Admin.Models.PortalModel.AuthPortalUser
+
+@{
+    ViewBag.Title = "AddPortalUser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var singleError = ViewBag.Error as string;
+    var errors = ViewBag.Errors as List<string>;
+}
+
+
+
+<!-- Start content -->
+<div class="content">
+
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-box">
+                    @{
+                        if (Model.Action == "AddPortalUser")
+                        {
+                            <h4 class="page-title float-left">Add Portal User</h4>
+                        }
+                        else
+                        {
+                            <h4 class="page-title float-left">Modify Portal User</h4>
+                        }
+                    }
+                    
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+        
+        <div class="row">
+            <div class="col-xl-12" style="margin-bottom: 5px">
+                <a href="@Url.Action("Index", "AppUserAdmin", new { Area = "Admin" })" class="btn btn-custom waves-effect waves-light pull-right">
+                    User Lists
+                </a>
+            </div>
+        </div>
+        
+        <div class="row">
+            
+            <div class="col-12">
+                
+                <div class="card-box">
+                    
+                    
+                    <form action="@Url.Action(Model.Action, "AppUserAdmin")" id="createPortalUserForm" method="POST" data_parsley_validate="">
+                        
+                        
+                        @{
+                            if (errors != null && errors.Any())
+                            {
+                                <div class="row">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h5>Error!</h5>
+                                        @{
+                                            foreach (var error in errors)
+                                            {
+                                                <p>@Html.Raw(error)</p>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+
+                            if (!string.IsNullOrEmpty(singleError) && singleError.Length > 0)
+                            {
+
+                                <div class="row">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h5>Error!</h5>
+                                        <p>@Html.Raw(singleError)</p>
+                                    </div>
+                                </div>
+                            }
+
+
+                            if (Model.Action == "ModifyPortalUser")
+                            {
+                                @Html.HiddenFor(m => m.UserId)
+                                @Html.HiddenFor(m => m.Password)
+                                @Html.HiddenFor(m => m.ConfirmPassword)
+                                @Html.HiddenFor(m => m.IsDeleted)
+                                @Html.HiddenFor(m => m.FailedPasswordCount)
+                                @Html.HiddenFor(m => m.IsFirstTimeLogin)
+                                @Html.HiddenFor(m => m.IsLockedOut)
+                                @Html.HiddenFor(m => m.LastLockedOutTimeStamp)
+                                @Html.HiddenFor(m => m.LastLoginTimeStamp)
+                                @Html.HiddenFor(m => m.TimeStampRegistered)
+                            }
+                        }
+                        
+                        
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <label for="LastName">Surname<span class="text-danger">*</span></label>
+                                    <div>
+
+                                        <input class="form-control required" type="text" value="@Model.LastName" name="LastName" id="LastName" placeholder="Surname" required="" data-parsley-required-message="Surname is required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <label for="FirstName"> First Name<span class="text-danger">*</span></label>
+                                    <div>
+                                        <input type="text" class="required form-control" value="@Model.FirstName" name="FirstName" id="FirstName" placeholder="First Name" required="" data-parsley-required-message="First Name is required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end row -->
+
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <label for="MobileNo">Mobile Number<span class="text-danger">*</span></label>
+                                    <div>
+                                        <input class="form-control required" type="text" value="@Model.MobileNo" name="MobileNo" id="MobileNo" placeholder="Mobile Number" required="" data-parsley-required-message="Mobile Number is required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <label for="Email"> Email<span class="text-danger">*</span></label>
+                                    <div>
+                                        <input type="text" class="required form-control" value="@Model.Email" name="Email" id="Email" placeholder="Email" required="" data-parsley-required-message="Email  is required">
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end row -->
+
+                        <div class="row">
+
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <label for="MyRoleIds">Roles<span class="text-danger">*</span></label>
+                                    <div>
+                                        @Html.CheckBoxListFor("MyRoleIds", @Html.GetTabRoleListByIds(model => model.MyRoleIds, Model.AllRoles), 6, WebCribs.MVCHelperLibrary.Utilities.RepeatedDirection.Horizontal)
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div class="col-xs-12 col-sm-6">
+
+                                <div class="checkbox checkbox-success">
+                                    <input name="IsApproved" id="IsApproved" type="checkbox">
+                                    <label for="IsApproved"> Approved </label>
+                                </div>
+                            </div>*@
+
+                        </div><!-- end row -->
+
+                        <div class="row">
+                        
+                        
+                            @{
+                                if (Model.Action == "AddPortalUser")
+                                {
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group clearfix">
+                                            <label for="UserName">Username<span class="text-danger">*</span></label>
+                                            <div>
+                                                <input class="form-control required" type="text" value="@Model.UserName" name="UserName" id="UserName" placeholder="Username" required="" data-parsley-required-message="Username is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group clearfix">
+                                            <label for="UserName">Username<span class="text-danger">*</span></label>
+                                            <div>
+                                                <input class="form-control required" type="text" value="@Model.UserName" name="UserName" id="UserName" placeholder="Username" required="" data-parsley-required-message="Username is required" readonly="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        
+                            @{
+                                if (Model.Action == "AddPortalUser")
+                                {
+                                    <div class="col-xs-12 col-sm-6">
+                                        <div class="form-group clearfix">
+                                            <label for="Password"> Password<span class="text-danger">*</span></label>
+                                            <div>
+                                                <input type="password" class="required form-control" value="@Model.Password" name="Password" id="Password" placeholder="Password" required="" data-parsley-required-message="Password is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            
+                            
+
+                        </div><!-- end row -->
+
+                        <div class="row">
+                            
+                            @{
+                                if (Model.Action == "AddPortalUser")
+                                {
+                                    <div class="col-xs-12 col-sm-6">
+                                        
+                                        <div class="form-group clearfix">
+                                            <label for="ConfirmPassword"> Confirm Password<span class="text-danger">*</span></label>
+                                            <div>
+                                                <input type="password" class="required form-control" value="@Model.ConfirmPassword" name="ConfirmPassword" id="ConfirmPassword" placeholder="Confirm Password" required="" data-parsley-required-message="Confirm Password is required">
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                           
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-group clearfix">
+                                    <div>
+                                        <br />
+                                        <button type="submit" class="btn btn-block btn-lg btn-custom waves-effect waves-light">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div><!-- end row -->
+
+
+                    </form>
+                    
+                    
+                </div>
+                
+            </div>
+
+        </div>
+        
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#createPortalUserForm').parsley().on('field:validated', function () {
+                var ok = $('.parsley-error').length === 0;
+                $('.bs-callout-danger').toggleClass('hidden', ok);
+            });
+        });
+        
+
+    </script>
+
+}
+
+
+
+
+

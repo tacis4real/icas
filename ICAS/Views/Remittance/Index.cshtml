@@ -1,0 +1,234 @@
+﻿@using ICAS.Models.ClientPortalModel
+@model IEnumerable<ICASStacks.APIObjs.ChurchServiceAttendanceRemittanceReportObj>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+
+    var clientChurchData = MvcApplication.GetClientChurchData(User.Identity.Name) ?? new ClientChurchData();
+    var logoSrc = clientChurchData.LogoPath + clientChurchData.Logo;
+
+    if (clientChurchData.Username == null || clientChurchData.ChurchId < 1)
+    {
+        logoSrc = "~/Images/logo-ultima.png";
+    }
+}
+
+<!-- Page-Title -->
+@*<div class="row">
+    <div class="col-sm-12">
+        
+        <div class="pull-right" style="margin-top: 12px">
+            <a href="@Url.Action("Index", "ChurchServiceAttendance")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Attendance List
+            </a>
+        </div>
+        <h4 class="page-title"> Remittance Details</h4>
+    </div>
+</div>*@
+
+
+ <!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btn-group pull-right m-t-15">
+            <button type="button" class="btn btn-custom dropdown-toggle waves-effect waves-light"
+                    data-toggle="dropdown" aria-expanded="false">
+                Remittance Options <span class="m-l-5">
+                    <i class="fa fa-cog"></i>
+                </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="@Url.Action("SetRemittanceCollectionPercent", "Remittance", new { Area = "" })">
+                    Collection Settings
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("CompareRemittance", "Remittance", new { Area = "" })">
+                    Graphical Comparison
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="@Url.Action("Index", "Remittance", new { Area = "" })">
+                    Compute
+                </a>
+                @*<a class="dropdown-item" href="#">Graphical Comparison</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>*@
+            </div>
+        </div>
+        <h4 class="page-title">Remittance</h4>
+    </div>
+</div>
+
+
+<div class="row">
+    
+    <div class="col-12">
+
+        <div class="card-box table-responsive">
+
+            <div class="row title">
+                
+                <div class="col-md-12">
+                    
+                    <div class="col-md-4 col-sm-4 col-xs-12 form-group pull-left" id="report-logo" style="display: none">
+                        <a href="@Url.Action("Index", "Home", new { Area = "" })" class="site_title"><img src="@Url.Content(logoSrc)" width="51" height="51"></a>
+                        <h5>
+                            Attendance &amp; Collection
+                        </h5>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 col-xs-12 form-group pull-right">
+                        <div class="radio">
+                            <input type="radio" name="remittanceType" id="national" value="1">
+                            <label for="national">
+                                National Remittance
+                            </label>
+                        </div>
+                        
+                        <div class="radio">
+                            <input type="radio" name="remittanceType" id="parish" value="2" >
+                            <label for="parish">
+                                Parish Remittance
+                            </label>
+                        </div>
+
+                        <input type="text" class="form-control has-feedback-left" id="dateRange" name="dateRange">
+                    </div>
+                </div>
+                <hr/>
+            </div>
+            
+            <div class="text-center" id="loader">
+                <div class="diamond-custom">
+                    <img src="~/images/money_bag_icon.png" width="100" height="100" />
+                </div><!--end diamond-->
+                
+                <div class="clearfix"></div>
+
+                <div class="text-center">
+                    <h3 class="text-info">Remittance base on Date Range!</h3>
+                    <p class="text-muted">The selected date range determine the remittance report to be populated after apply.</p>
+                </div>
+            </div>
+
+            <div id="remittance">
+
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<div class="modal fade" id="churchServiceAttendanceRemittanceDetail" tabindex="-1" role="dialog" aria-hidden="true">
+    <span id="churchServiceAttendanceRemittanceDetailModal"></span>
+</div>
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            //Buttons examples
+            //var table = $('#datatable-buttons').DataTable({
+            //    lengthChange: false,
+            //    buttons: ['copy', 'excel', 'pdf']
+            //});
+
+            //table.buttons().container()
+            //    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+        });
+        
+        var todayDateTime = '@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")';
+        var userprefs = {
+            start: moment(todayDateTime).format('DD-MM-YYYY'),
+            end: moment(todayDateTime).format('DD-MM-YYYY'),
+        };
+        var d = {
+            opens: "left",
+            locale: {
+                format: "DD-MM-YYYY"
+            },
+            startDate: userprefs.start,
+            endDate: userprefs.end
+        };
+        $('#dateRange').daterangepicker(d, function (start, end, label) {
+            //alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            //var remittanceType = $("input[name='remittanceType']:checked").val();
+            
+            var remittanceType = $("input[name='remittanceType']:checked").val();
+            if (remittanceType == '' || remittanceType < 1 || remittanceType > 2) {
+                alert("Please select the remittance type for the Selected Date Range");
+                return;
+            }
+            
+            //alert("Please select the remittance type for the Selected Date Range");
+            getGraph(remittanceType, start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+        });
+
+
+
+        function getGraph(type, start, end) {
+            //show loading
+            //$(".loading-img").show();
+            //$("#transaction-chart").html("");
+            @*var jsonurl = '@Url.Action("GetChart", "Chart")';*@
+            @*var jsonurl = '@Url.Action("RemittanceDetail", "Remittance")';
+            if (typeof start != 'undefined' && typeof end != 'undefined' && start != null & end != null) {
+                jsonurl += '?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end);
+            } else {
+                jsonurl += '?start=' + encodeURIComponent(userprefs.start) + '&end=' + encodeURIComponent(userprefs.end);
+            }
+
+            $.getJSON(jsonurl, function (data) {
+                $("#remittance").html(data);
+            });*@
+            
+            if (typeof start != 'undefined' && typeof end != 'undefined' && start != null & end != null) {
+                start = encodeURIComponent(start); 
+                end = encodeURIComponent(end);
+            } else {
+                start = encodeURIComponent(userprefs.start);
+                end = encodeURIComponent(userprefs.end);
+            }
+            $.ajax({
+                url: '@Url.Action("RemittanceDetail", "Remittance")/?remittanceType=' + type + "&start=" + start + "&end=" + end,
+                dataType: "html",
+                success: function (data) {
+                    
+                    $('#report-logo').show();
+                    $('#loader').hide();
+                    $('#remittance').html(data);
+                }
+            });
+        }
+
+
+        function churchServiceAttendanceRemittanceDetail(churchServiceAttendanceRemittanceId) {
+            if (churchServiceAttendanceRemittanceId === "") return;
+            $.ajax({
+                url: '@Url.Action("RemittanceDetail", "Remittance")/?churchServiceAttendanceRemittanceId=' + churchServiceAttendanceRemittanceId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#churchServiceAttendanceRemittanceDetailModal').html(data);
+                    $('#churchServiceAttendanceRemittanceDetail').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+
+}

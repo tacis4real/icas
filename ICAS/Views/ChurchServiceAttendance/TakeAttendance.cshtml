@@ -1,0 +1,280 @@
+﻿@using ICAS.Models.ClientPortalModel
+@model ICASStacks.APIObjs.ChurchServiceAttendanceRegObj
+
+@{
+    ViewBag.Title = "TakeAttendance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var singleError = ViewBag.Error as string;
+    var errors = ViewBag.Errors as List<string>;
+}
+
+@{
+    var clientData = MvcApplication.GetClientData(User.Identity.Name) ?? new ClientData();
+    var clientChurchData = MvcApplication.GetClientChurchData(User.Identity.Name) ?? new ClientChurchData();
+}
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="pull-right" style="margin-top: 12px">
+            <a href="@Url.Action("Index", "ChurchServiceAttendance")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Attendance List
+            </a>
+        </div>
+
+        <h4 class="page-title"> Take Attendance</h4>
+    </div>
+</div>
+
+
+<div class="row">
+
+    <div class="col-12">
+
+
+        <div class="card-box" style="padding: 60px">
+
+            <form role="form" action="@Url.Action("TakeAttendance", "ChurchServiceAttendance")" id="takeChurchServiceAttendance" data-parsley-validate method="post">
+
+                @{
+                    if (errors != null && errors.Any())
+                    {
+                       <div class="row">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5>Error!</h5>
+                                @{
+                                    foreach (var error in errors)
+                                    {
+                                        <p>@Html.Raw(error)</p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    }
+
+
+                    if (!string.IsNullOrEmpty(singleError) && singleError.Length > 0)
+                    {
+                       <div class="row">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h5>Error!</h5>
+                                <p>@Html.Raw(singleError)</p>
+                            </div>
+                        </div>
+                    
+                    
+                    }
+                }
+
+                @Html.HiddenFor(m => m.ClientChurchId)
+
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="ChurchServiceTypeRefId">Church Service Type<span class="text-danger">*</span></label>
+                            <div>
+                                <select id="SelectTakeChurchServiceForAttendance" name="ChurchServiceTypeRefId" class="form-control" required="" data-parsley-required-message="Church service is required"></select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="ServiceTheme"> Theme<span class="text-danger">*</span></label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.ServiceTheme" name="ServiceTheme" id="ServiceTheme" placeholder="Theme for the Service" required="" data-parsley-required-message="Service theme is required">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end row -->
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group clearfix">
+                            <label for="Preacher">Preacher<span class="text-danger">*</span></label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.Preacher" name="Preacher" id="Preacher" placeholder="Preacher for the Service" required="" data-parsley-required-message="Preacher is required">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group clearfix">
+                            <label for="BibleReadingText"> Bible Reading Text<span class="text-danger">*</span></label>
+                            <div>
+                                <input type="text" class="form-control required" value="@Model.BibleReadingText" name="BibleReadingText" id="BibleReadingText" placeholder="Bible text reading for the service">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group clearfix">
+                            <label for="DateServiceHeld"> Date Service Held<span class="text-danger">*</span></label>
+                            <div>
+                                <input type="text" class="form-control required" id="DateServiceHeld" name="DateServiceHeld">
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end row -->
+
+
+
+                <hr />
+                @{
+                    var collections = Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections;
+                }
+
+                <div class="row">
+
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+                        <h4 class="header-title m-t-0">Attendee</h4>
+                        <p class="text-muted font-13 m-b-10">
+                            Fill below the number of:
+                        </p>
+                        <div class="p-20">
+
+                            <div class="form-group row">
+                                <label for="@Model.ChurchServiceAttendanceDetail.NumberOfMen" class="col-sm-4 form-control-label"> Men</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.NumberOfMen, new { @type = "number", @min = "0", @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="@Model.ChurchServiceAttendanceDetail.NumberOfWomen" class="col-sm-4 form-control-label"> Women</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.NumberOfWomen, new { @type = "number", @min = "0", @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="@Model.ChurchServiceAttendanceDetail.NumberOfChildren" class="col-sm-4 form-control-label"> Children</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.NumberOfChildren, new { @type = "number", @min = "0", @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="@Model.ChurchServiceAttendanceDetail.FirstTimer" class="col-sm-4 form-control-label"> First Timer</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.FirstTimer, new { @type = "number", @min = "0", @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="@Model.ChurchServiceAttendanceDetail.NewConvert" class="col-sm-4 form-control-label"> New Convert</label>
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.NewConvert, new { @type = "number", @min = "0", @class = "form-control" })
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-6">
+                        <h4 class="header-title m-t-0">Collections</h4>
+                        <p class="text-muted font-13 m-b-10">
+                            Fill below the amount captured for:
+                        </p>
+                        <div class="p-20">
+
+                            @for (int j = 0; j < collections.Count; j++)
+                            {
+
+                                int i = j;
+
+                                @Html.HiddenFor(m => Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections[i].CollectionRefId)
+                                @Html.HiddenFor(m => Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections[i].CollectionTypeName)
+                                <div class="form-group row">
+                                    <label for="@Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections[i].CollectionRefId" class="col-sm-4 form-control-label">@Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections[i].CollectionTypeName</label>
+                                    <div class="col-sm-7">
+
+                                        @Html.TextBoxFor(m => Model.ChurchServiceAttendanceDetail.ClientChurchServiceAttendanceCollections[i].Amount, new { @type = "number", @min = "0", @class = "form-control" })
+
+                                    </div>
+
+                                </div>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="form-group clearfix">
+                            <div>
+                                <br />
+                                <button type="submit" class="btn btn-block btn-lg btn-success waves-effect waves-light">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- end row -->
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            $('input[name="DateServiceHeld"]').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                locale: {
+                    format: "DD-MM-YYYY"
+                }
+            },
+            function (start, end, label) {
+
+            });
+        });
+
+
+        $(document).ready(function (e) {
+
+            var clientChurchId = "@clientData.ClientId";
+            var churchId = "@clientChurchData.ChurchId";
+            LoadChurchServices(clientChurchId);
+        });
+        
+        function LoadChurchServices(clientChurchId) {
+            $.getJSON('@Url.Action("GetClientChurchServiceList", "Data")/', { clientChurchId: clientChurchId }, function (data) {
+                    var items = "";
+                    $.each(data, function (i, item) {
+
+                        if ('@Model.ChurchServiceTypeRefId' == item.K) {
+                            items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                        } else {
+                            items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                        }
+                    });
+                $("#SelectTakeChurchServiceForAttendance").html(items);
+            });
+        }
+    </script>
+
+}

@@ -1,0 +1,13 @@
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\WebAdminStacks.dll.config
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\WebAdminStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\WebAdminStacks.pdb
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\EntityFramework.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\EntityFramework.SqlServer.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\WebCribs.TechCracker.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\EntityFramework.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\bin\Release\EntityFramework.SqlServer.xml
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Release\WebAdminStacks.csprojResolveAssemblyReference.cache
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Release\WebAdminStacks.DataManager.Migration.migration1.resources
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Release\WebAdminStacks.csproj.GenerateResource.Cache
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Release\WebAdminStacks.dll
+C:\APPS\WEB\ASP\MVC\Published\Raw\ICAS\WebAdminStacks\obj\Release\WebAdminStacks.pdb

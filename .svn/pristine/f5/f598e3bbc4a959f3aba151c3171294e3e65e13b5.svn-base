@@ -1,0 +1,373 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Migrations;
+using System.Linq;
+using System.Web.Helpers;
+using WebAdminStacks.DataContract;
+using WebAdminStacks.Repository.Helper;
+using WebCribs.TechCracker.WebCribs.TechCracker;
+
+namespace WebAdminStacks.DataManager
+{
+    internal partial class Configuration
+    {
+        public void ProcessSeed(WebAdminStackEntities context)
+        {
+            
+
+            #region Admin Users
+
+            if (!context.Roles.Any())
+            {
+
+                var role = new Role { Name = "PortalAdmin", Description = "Portal Admin Role" };
+                context.Roles.AddOrUpdate(m => m.Name, role);
+                context.SaveChanges();
+
+                role = new Role { Name = "SiteAdmin", Description = "Site Admin Role" };
+                context.Roles.AddOrUpdate(m => m.Name, role);
+                context.SaveChanges();
+
+                role = new Role { Name = "SiteUser", Description = "Site User Role" };
+                context.Roles.AddOrUpdate(m => m.Name, role);
+                context.SaveChanges();
+
+                role = new Role { Name = "*", Description = "All Access" };
+                context.Roles.AddOrUpdate(m => m.Name, role);
+                context.SaveChanges();
+
+            }
+
+            LoadDefaultUser(context);
+            if (!context.UserRoles.Any())
+            {
+                var userRole = new UserRole
+                {
+                    UserId = 1,
+                    RoleId = 1
+                };
+                context.UserRoles.AddOrUpdate(m => m.UserId, userRole);
+                context.SaveChanges();
+
+                userRole = new UserRole
+                {
+                    UserId = 2,
+                    RoleId = 1
+                };
+                context.UserRoles.AddOrUpdate(m => m.UserId, userRole);
+                context.SaveChanges();
+            }
+
+            #endregion
+
+            #region Client Church
+
+            if (!context.RoleClients.Any())
+            {
+                var roleClient = new RoleClient { Name = "Pastor", Description = "Pastor In Charge Role" };
+                context.RoleClients.AddOrUpdate(m => m.Name, roleClient);
+                context.SaveChanges();
+
+                roleClient = new RoleClient { Name = "ChurchAdmin", Description = "Church Admin Role" };
+                context.RoleClients.AddOrUpdate(m => m.Name, roleClient);
+                context.SaveChanges();
+            }
+
+            #region Client - Old
+            LoadDefaultClientProfile(context);
+            //if (!context.ClientRoles.Any())
+            //{
+            //    var clientRole = new ClientRole
+            //    {
+            //        ClientProfileId = 1,
+            //        RoleClientId = 1
+            //    };
+            //    context.ClientRoles.AddOrUpdate(m => m.ClientProfileId, clientRole);
+            //    context.SaveChanges();
+
+            //    clientRole = new ClientRole
+            //    {
+            //        ClientProfileId = 2,
+            //        RoleClientId = 1
+            //    };
+            //    context.ClientRoles.AddOrUpdate(m => m.ClientProfileId, clientRole);
+            //    context.SaveChanges();
+            //}
+            #endregion
+            
+
+            LoadDefaultClientChurchProfile(context);
+            if (!context.ClientChurchRoles.Any())
+            {
+                var clientChurchRole = new ClientChurchRole
+                {
+                    ClientChurchProfileId = 1,
+                    RoleClientId = 1
+                };
+                context.ClientChurchRoles.AddOrUpdate(m => m.ClientChurchProfileId, clientChurchRole);
+                context.SaveChanges();
+
+                clientChurchRole = new ClientChurchRole
+                {
+                    ClientChurchProfileId = 2,
+                    RoleClientId = 1
+                };
+                context.ClientChurchRoles.AddOrUpdate(m => m.ClientChurchProfileId, clientChurchRole);
+                context.SaveChanges();
+            }
+
+            #endregion
+
+        }
+
+        private void LoadDefaultUser(WebAdminStackEntities context)
+        {
+            if (!context.Users.Any())
+            {
+                try
+                {
+                    var password = Crypto.GenerateSalt();
+                    var salt = EncryptionHelper.GenerateSalt(30, 50);
+                    var accessCode = Crypto.HashPassword("STC_User");
+
+                    var defaultUser = new DataContract.User
+                    {
+                        Surname = "SuperAdmin",
+                        Othernames = "SimpleTech",
+                        Email = "admin@simpletechcracker.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348030000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "simpleadmin",
+                    };
+                    context.Users.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+
+
+                    password = Crypto.GenerateSalt();
+                    salt = EncryptionHelper.GenerateSalt(30, 50);
+                    accessCode = Crypto.HashPassword("EPP_User");
+
+                    defaultUser = new DataContract.User
+                    {
+                        Surname = "Admin",
+                        Othernames = "User",
+                        Email = "admin@epayplusng.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348020000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "useradmin",
+                    };
+                    context.Users.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                }
+            }
+        }
+
+        private void LoadDefaultClientProfile(WebAdminStackEntities context)
+        {
+            if (!context.ClientProfiles.Any())
+            {
+                try
+                {
+                    var password = Crypto.GenerateSalt();
+                    var salt = EncryptionHelper.GenerateSalt(30, 50);
+                    var accessCode = Crypto.HashPassword("STC_User");
+
+                    var defaultUser = new ClientProfile
+                    {
+                        ClientId = 1,
+                        Fullname = "SimpleTech Church Admin",
+                        Email = "admin@simpletechcracker.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348030000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "simpleadmin",
+                    };
+                    context.ClientProfiles.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+
+
+                    password = Crypto.GenerateSalt();
+                    salt = EncryptionHelper.GenerateSalt(30, 50);
+                    accessCode = Crypto.HashPassword("EPP_User");
+
+                    defaultUser = new ClientProfile
+                    {
+                        ClientId = 2,
+                        Fullname = "Epay Church Admin",
+                        Email = "admin@epayplusng.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348020000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "epayadmin",
+                    };
+                    context.ClientProfiles.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+
+
+                }
+                catch (Exception ex)
+                {
+                    BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                }
+            }
+        }
+
+        private void LoadDefaultClientChurchProfile(WebAdminStackEntities context)
+        {
+            if (!context.ClientChurchProfiles.Any())
+            {
+                try
+                {
+                    var password = Crypto.GenerateSalt();
+                    var salt = EncryptionHelper.GenerateSalt(30, 50);
+                    var accessCode = Crypto.HashPassword("STC_User");
+
+                    var defaultUser = new ClientChurchProfile
+                    {
+                        ClientChurchId = 1,
+                        Fullname = "SimpleTech Church Admin",
+                        Email = "admin@simpletechcracker.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348030000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "simpleadmin",
+                    };
+                    context.ClientChurchProfiles.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+
+
+                    password = Crypto.GenerateSalt();
+                    salt = EncryptionHelper.GenerateSalt(30, 50);
+                    accessCode = Crypto.HashPassword("EPP_User");
+
+                    defaultUser = new ClientChurchProfile
+                    {
+                        ClientChurchId = 2,
+                        Fullname = "Epay Church Admin",
+                        Email = "admin@epayplusng.com",
+                        AccessCode = accessCode,
+                        IsFirstTimeLogin = true,
+                        FailedPasswordCount = 0,
+                        IsApproved = true,
+                        IsDeleted = false,
+                        IsLockedOut = false,
+                        LastLockedOutTimeStamp = "",
+                        IsMobileActive = true,
+                        IsPasswordChangeRequired = true,
+                        IsWebActive = true,
+                        IsEmailVerified = true,
+                        IsMobileNumberVerified = true,
+                        LastLoginTimeStamp = "",
+                        MobileNumber = "2348020000000",
+                        RegisteredByUserId = 1,
+                        Password = password,
+                        Sex = 1,
+                        PasswordChangeTimeStamp = "",
+                        UserCode = salt,
+                        TimeStampRegistered = DateScrutnizer.CurrentTimeStamp(),
+                        Username = "epayadmin",
+                    };
+                    context.ClientChurchProfiles.AddOrUpdate(m => m.Username, defaultUser);
+                    context.SaveChanges();
+
+
+                }
+                catch (Exception ex)
+                {
+                    BugManager.LogApplicationBug(ex.StackTrace, ex.Source, ex.Message);
+                }
+            }
+        }
+    }
+}

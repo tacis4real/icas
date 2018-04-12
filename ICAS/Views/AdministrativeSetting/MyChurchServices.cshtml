@@ -1,0 +1,141 @@
+﻿@model IEnumerable<ICASStacks.APIObjs.ChurchServiceDetailObj>
+
+@{
+    ViewBag.Title = "MyChurchServices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Page-Title -->
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="pull-right" style="margin-top: 12px">
+
+            <a href="@Url.Action("NewCollectionType", "AdministrativeSetting")" class="btn btn-custom waves-effect waves-light m-r-5 m-b-10">
+                Add Church Service
+            </a>
+        </div>
+
+        <h4 class="page-title">Church Service Types</h4>
+    </div>
+</div>
+
+@{
+    var errorMessage = ViewBag.Error as string;
+    var successMessage = ViewBag.Reply as string;
+    if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+    {
+        <div class="row">
+            <div class="alert alert-danger" role="alert" style="width: 100%">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5>Info!</h5>
+                <p>@Html.Raw(errorMessage)</p>
+            </div>
+        </div>
+
+
+    }
+    if (!string.IsNullOrEmpty(successMessage) && successMessage.Length > 1)
+    {
+        <div class="row">
+            <div class="alert alert-success" role="alert" style="width: 100%">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5>Success!</h5>
+                <p>@Html.Raw(successMessage)</p>
+            </div>
+        </div>
+    }
+
+}
+
+<div class="row">
+
+    <div class="col-12">
+        <div class="card-box table-responsive" style="padding: 60px">
+            <table id="datatable-buttons" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+                <thead>
+                    <tr>
+                        <th>Church Service</th>
+
+                        <th>
+                            <div>Actions</div>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+
+                                <td>
+                                    <div class="btn-group m-b-20">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default btn-sm dropdown-toggle  waves-effect" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span> </button>
+                                            <div class="dropdown-menu">
+                                                
+                                                <a class="dropdown-item" href="javascript:void(0)" onclick="modifyClientChurchServiceType('@item.ChurchServiceTypeRefId')">Edit</a>
+                                                <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href='@Url.Action("AttendanceInfo", "ChurchServiceAttendance", new { churchServiceAttendanceId = @item.ChurchServiceTypeRefId })'>
+                                                    Info
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="clientChurchServiceTypeModify" tabindex="-1" role="dialog" aria-hidden="true">
+    <span id="clientChurchServiceTypeModifyModal"></span>
+</div>
+
+
+@section scripts
+{
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+        });
+
+        function modifyClientChurchServiceType(churchServiceTypeRefId) {
+            if (churchServiceTypeRefId === "") return;
+            $.ajax({
+                url: '@Url.Action("ModifyServiceType", "AdministrativeSetting")/?id=' + churchServiceTypeRefId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#clientChurchServiceTypeModifyModal').html(data);
+                    $('#clientChurchServiceTypeModify').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+}

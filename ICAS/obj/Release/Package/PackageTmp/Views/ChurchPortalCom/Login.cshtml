@@ -1,0 +1,134 @@
+﻿@model ICAS.Models.ClientPortalModel.ClientLoginContract
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <!-- App Favicon -->
+        <link rel="shortcut icon" href="~/images/favicon.ico">
+        <title>Login - ICAS</title>
+    
+        <!-- Bootstrap CSS -->
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- App CSS -->
+        <link href="~/Content/style.css" rel="stylesheet" type="text/css" />
+        <!-- Modernizr js -->
+        <script src="~/Scripts/modernizr.min.js"></script>
+    
+
+    </head>
+    <body style="background:#555;">
+
+
+        <div class="account-pages"></div>
+        <div class="clearfix"></div>
+        <div class="wrapper-page">
+            
+            <div class="text-center m-t-20">
+                <div class="logo">
+                    <img src="~/Images/logo-ultima.png">
+                </div>
+            </div>
+
+            <div class="account-bg">
+                <div class="card-box mb-0">
+                    
+                    <div class="m-t-10 p-20">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h6 class="text-muted text-uppercase m-b-0 m-t-0">Sign In</h6>
+                            </div>
+                        </div>
+
+                        @using (Html.BeginForm())
+                        {
+
+
+                            var errorMessage = ViewBag.ClientProfileError as string;
+
+                            if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+                            {
+                                <div class="row">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h5>Error!</h5>
+                                        <p>@Html.Raw(errorMessage)</p>
+                                    </div>
+                                </div>
+                            }
+                            
+                            
+                            @Html.AntiForgeryToken()
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <input class="form-control" id="UserName" name="UserName" type="text" required="" placeholder="Username">
+                                    <span style="color:Red; text-align:left;"> @Html.ValidationMessageFor(model => model.UserName)</span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <input class="form-control" id="Password" name="Password" type="password" required="" placeholder="Password">
+                                    @*<span style="color:Red; text-align:left;"> @Html.ValidationMessageFor(model => model.Password)</span>*@
+                                </div>
+                            </div>
+
+                            <div class="form-group text-center row m-t-10">
+                                <span style="color:Red; text-align:left;">@Html.ValidationSummary(true)</span>
+                                <div class="col-12">
+                                    <button class="btn btn-success btn-block waves-effect waves-light" type="submit">Log In</button>
+                                </div>
+                            </div>
+
+                        }
+
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+        </div>
+    <!-- end wrapper page -->
+
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/popper.min.js"></script><!-- Tether for Bootstrap -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/plugins/switchery/switchery.min.js"></script>
+    <!-- App js -->
+    <script src="~/Scripts/jquery.core.js"></script>
+    <script src="~/Scripts/jquery.app.js"></script>
+
+    <div>
+
+        <script src="~/Scripts/jquery.backstretch.min.js"></script>
+        <script type="text/javascript">
+            $.backstretch([
+              "./../Images/big/7.png",
+              "./../Images/big/8.png"
+              //"./../Images/bg/6.jpg"
+            ], {
+                fade: 1000,
+                duration: 7000
+            });
+        </script>
+    </div>
+
+</body>
+
+</html>

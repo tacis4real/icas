@@ -1,0 +1,69 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+        <meta name="author" content="Coderthemes">
+        <!-- App Favicon -->
+        <link rel="shortcut icon" href="~/images/favicon.ico">
+        <!-- App title -->
+        <title>My Church Portal Initialization - Server Error</title>
+        <!-- Bootstrap CSS -->
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- App CSS -->
+        <link href="~/Content/style.css" rel="stylesheet" type="text/css" />
+        <!-- Modernizr js -->
+        <script src="~/Scripts/modernizr.min.js"></script>
+
+    </head>
+
+    <body>
+        <div class="server-pages"></div>
+        <div class="clearfix"></div>
+        <div class="wrapper-page">
+            <div class="ex-page-content text-center">
+                <div class="text-error shadow">500</div>
+                <h3 class="text-uppercase text-white font-600">Internal Server Error</h3>
+                @{
+                    if (!string.IsNullOrEmpty(ViewBag.ConfigMessage))
+                    {
+                        @ViewBag.ConfigMessage.ToString();
+                    }
+                    else
+                    {
+                        <p class="text-white m-t-30">
+                            Why not try refreshing your page? or you can contact <a href="" class="text-white text-uppercase"><b>support</b></a>
+                        </p>
+                    }
+                }
+                <br>
+                <a class="btn btn-pink waves-effect waves-light" href="~/Areas/Admin/Views/PortalCom/index.html"> Return Home</a>
+            </div>
+
+        </div>
+        <!-- end wrapper page -->
+
+        <script>
+            var resizefunc = [];
+        </script>
+        <!-- jQuery  -->
+        <script src="~/Scripts/jquery.min.js"></script>
+        <script src="~/Scripts/popper.min.js"></script><!-- Tether for Bootstrap -->
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/detect.js"></script>
+        <script src="~/Scripts/waves.js"></script>
+        <script src="~/Scripts/jquery.nicescroll.js"></script>
+        <script src="~/Scripts/plugins/switchery/switchery.min.js"></script>
+        <!-- App js -->
+        <script src="~/Scripts/jquery.core.js"></script>
+        <script src="~/Scripts/jquery.app.js"></script>
+    </body>
+</html>
+

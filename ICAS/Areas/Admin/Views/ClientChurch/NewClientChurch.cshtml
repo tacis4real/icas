@@ -1,0 +1,860 @@
+﻿@using ICASStacks.DataContract
+@using WebCribs.MVCHelperLibrary
+@model ICASStacks.APIObjs.ClientChurchRegistrationObj
+
+@{
+    ViewBag.Title = "NewClientChurch";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var singleError = ViewBag.Error as string;
+    var errors = ViewBag.Errors as List<string>;
+}
+
+
+<!-- Start content -->
+<div class="content">
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-box">
+                    <h4 class="page-title float-left">Setup New Church</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+        
+        <div class="row">
+            <div class="col-xl-12" style="margin-bottom: 5px">
+                <a href="@Url.Action("Index", "ClientChurch", new { Area = "Admin" })" class="btn btn-custom waves-effect waves-light pull-right">
+                    Client Lists
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <div class="card-box">
+                    
+                   
+                    
+                    <div class="start-project">
+                        
+                        <div class="title">
+                            <ul>
+                                <li data-link="basic-data" class="current"><a href="#"><i class="fa fa-pagelines"></i><span>Baisc Info</span></a></li>
+                                <li data-link="contact-data" class=""><a href="#"><i class="fa fa-link"></i><span>Contact Info</span></a></li>
+                                <li data-link="account-data" class=""><a href="#"><i class="fa fa-tags"></i><span>Account Info</span></a></li>
+                                <li data-link="profile-data" class=""><a href="#"><i class="fa fa-file-image-o"></i><span>Profile</span></a></li>
+                                <li data-link="structure-data" class=""><a href="#"><i class="fa fa-file-image-o"></i><span>Structure HeadQuarters</span></a></li>
+                            </ul>
+                        </div>
+                        <hr>
+                        <div class="start-content">
+                            
+                            <form action="@Url.Action(@Model.Action, "ClientChurch")" id="createClientChurchForm" method="POST" data_parsley_validate="">
+                                
+                                @{
+                                    if (errors != null && errors.Any())
+                                    {
+                                        <div class="row">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h5>Error!</h5>
+                                                @{
+                                                    foreach (var error in errors)
+                                                    {
+                                                        <p>@Html.Raw(error)</p>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                    if (!string.IsNullOrEmpty(singleError) && singleError.Length > 0)
+                                    {
+                                        
+                                        <div class="row">
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <h5>Error!</h5>
+                                                <p>@Html.Raw(singleError)</p>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    if (Model.Action == "ModifyClientChurch")
+                                    {
+                                        @Html.HiddenFor(m => m.ClientChurchId)
+                                        @Html.HiddenFor(m => m.ClientChurchProfile.ClientChurchProfileId)
+                                        @Html.HiddenFor(m => m.ClientChurchProfile.Password)
+                                        @Html.HiddenFor(m => m.ClientChurchProfile.ConfirmPassword)
+                                        @Html.HiddenFor(m => m.Parishes)
+                                    }
+                                    
+                                    
+                                }
+                                
+                                
+                                <!-- Church Basic Info -->
+                                <div id="basic-data" class="form-wizard active">
+                                    
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ChurchId">Parent Church <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForChurch" name="ChurchId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Parent Church is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="Name">Parish Name<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input class="form-control required" type="text" value="@Model.Name" name="Name" id="Name" placeholder="Church name" required="" data-parsley-required-message="Church name is required">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+                                    
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="Pastor"> Pastor-in-Charge<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="text" class="required form-control" value="@Model.Pastor" name="Pastor" id="Pastor" placeholder="Pastor-in-Charge" required="" data-parsley-required-message="Pastor-in-Charge is required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="Title">Title <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForTitle" name="Title" class="form-control" required="" data-parsley-required-message="Minister-in-Charge Title is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="Sex"> Sex<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select name="Sex" id="Sex" class="form-control" required="" data-parsley-required-message="Gender is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div><!-- end row -->
+                                    
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="contact-data" onclick="moveform(this, 'contact-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Church Contact Info -->
+                                <div id="contact-data" class="form-wizard">
+                                    
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="StateOfLocationId"> State of Location<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForStateOfLocation" name="StateOfLocationId" class="form-control" style="width: 100%" required="" data-parsley-required-message="State of location is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.Email"> Email<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="email" class="form-control has-feedback-left" value="@Model.Email" name="Email" id="Email" placeholder="Email" required="" data-parsley-required-message="Email is required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col-xs-6 col-sm-3">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.PhoneNumber"> Phone Number<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <input type="text" class="form-control has-feedback-left" value="@Model.PhoneNumber" name="PhoneNumber" id="PhoneNumber" placeholder="Phone Number" required="" data-parsley-required-message="Phone number is required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+                                    
+                                    
+                                    <div class="row">
+                                        
+                                        <div class="col-xs-12 col-sm-12">
+                                            <div class="form-group clearfix">
+                                                <label for="Address"> Contact Address<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <textarea rows="4" placeholder="Address" name="Address" id="Address" class="form-control" required="" data-parsley-required-message="Contact address is required">@Model.Address</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="basic-data" onclick="moveBack(this, 'basic-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="account-data" onclick="moveform(this, 'account-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Church Account Info -->
+                                <div id="account-data" class="form-wizard">
+                                    
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.BankId">Bank <span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForBank" name="BankId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Bank name is required"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.AccountTypeId"> Account Type<span class="text-danger">*</span></label>
+                                                <div>
+                                                    <select id="NewClientSelectForAccountType" name="AccountTypeId" class="form-control" style="width: 100%" required="" data-parsley-required-message="Account Type is required"></select>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchAccount.AccountName"> Account Name<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchAccount.AccountName, new { @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchAccount.AccountNumber"> Account Number<span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.TextBoxFor(m => Model.ClientChurchAccount.AccountNumber, new { @class = "form-control", required = "required" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+                                    
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="contact-data" onclick="moveBack(this, 'contact-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="profile-data" onclick="moveform(this, 'profile-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                
+                                <!-- Church Profile Info -->
+                                <div id="profile-data" class="form-wizard">
+                                    
+                                    <div class="row">
+                                        
+                                        @{
+                                            if (Model.Action == "NewClientChurch")
+                                            {
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <div class="form-group clearfix">
+                                                        <label for="@Model.ClientChurchProfile.Username"> Username<span class="text-danger">*</span></label>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => Model.ClientChurchProfile.Username, new {@class = "form-control", required = "required"})
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <div class="form-group clearfix">
+                                                        <label for="@Model.ClientChurchProfile.Username"> Username<span class="text-danger">*</span></label>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => Model.ClientChurchProfile.Username, new { @class = "form-control", required = "required", @readonly="readonly" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    
+                                        @{
+                                            if (Model.Action == "NewClientChurch")
+                                            {
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <div class="form-group clearfix">
+                                                        <label for="@Model.ClientChurchProfile.Password"> Password<span class="text-danger">*</span></label>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => Model.ClientChurchProfile.Password, new { @type = "password", @class = "form-control", required = "required" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        
+                                        
+                                    </div><!-- end row -->
+                                    
+                                    
+                                    <div class="row">
+                                        @{
+                                            if (Model.Action == "NewClientChurch")
+                                            {
+                                                <div class="col-xs-12 col-sm-6">
+                                                    <div class="form-group clearfix">
+                                                        <label for="@Model.ClientChurchProfile.ConfirmPassword"> Confirm Password<span class="text-danger">*</span></label>
+                                                        <div>
+                                                            @Html.TextBoxFor(m => Model.ClientChurchProfile.ConfirmPassword, new { @type = "password", @class = "form-control", required = "required" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="@Model.ClientChurchProfile.MyRoleIds">Roles <span class="text-danger">*</span></label>
+                                                <div>
+                                                    @Html.CheckBoxListFor("MyRoleIds", @Html.GetTabRoleListByIds(model => Model.ClientChurchProfile.MyRoleIds, Model.ClientChurchProfile.AllRoles), 6, WebCribs.MVCHelperLibrary.Utilities.RepeatedDirection.Horizontal)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end row -->
+
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="account-data" onclick="moveBack(this, 'account-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="structure-data" onclick="moveform(this, 'structure-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-right"></i>
+                                            </span>Next
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                                <!-- Church Structure Headquarters Info -->
+                                <div id="structure-data" class="form-wizard">
+
+                                    <div class="row">
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ChurchStructureParishHeadQuarters[]">Parishes Church </label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForParishHeadQuarters" name="ChurchStructureParishHeadQuarters[]" class="select2 select2-multiple form-control" multiple="multiple" multiple data-placeholder="Choose ..." style="width: 100%"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group clearfix">
+                                                <label for="ClientChurchHeadQuarterChurchStructureTypeId"> HeadQuarter As: </label>
+                                                <div>
+                                                    <select id="NewClientChurchSelectForHeadQuarterStructure" name="ClientChurchHeadQuarterChurchStructureTypeId" class="form-control" style="width: 100%"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div><!-- end row -->
+
+                                    <div class="next-btn">
+                                        <button type="button" class="btn btn-primary waves-effect waves-light" data-link="profile-data" onclick="moveBack(this, 'profile-data')">
+                                            <span class="btn-label">
+                                                <i class="fa fa-arrow-left"></i>
+                                            </span>Previous
+                                        </button>
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light">Submit</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        var selectedParentChurchId = 0;
+        var selectedStateId = 0;
+        var selectedChurchStructureTypeId = 0;
+        var selectedParishes = [];
+        var c = 0;
+
+        $(document).ready(function() {
+
+            //$('#createClientChurchForm').parsley().on('field:validated', function() {
+            //    var ok = $('.parsley-error').length === 0;
+            //    $('.bs-callout-danger').toggleClass('hidden', ok);
+            //}); ChurchStructureParishHeadQuarters
+
+            LoadSex();
+            LoadTitle();
+            LoadParentChurch();
+            LoadState();
+            
+            LoadAccountTypes();
+            LoadBanks();
+
+            selectedParishes = '@Html.Raw(Json.Encode(Model.ChurchStructureParishHeadQuarters))';
+            selectedStateId = '@Html.Raw(Json.Encode(Model.StateOfLocationId))';
+            selectedParentChurchId = '@Html.Raw(Json.Encode(Model.ChurchId))';
+
+            if (selectedParentChurchId > 0 && selectedStateId > 0) {
+                LoadStructureChurchParishes(selectedParentChurchId, selectedStateId, 1);
+            }
+            
+            if (selectedParentChurchId > 0) {
+                // Calling to Load
+                LoadChurchStructureTypeByChurchId(selectedParentChurchId);
+            }
+
+
+        });
+        
+        
+
+
+        $("#NewClientChurchSelectForChurch").change(function () {
+            var parentchurchId = $(this).val();
+            selectedParentChurchId = parentchurchId;
+
+            // Reseting
+            $("#NewClientChurchSelectForStateOfLocation").val('');
+            selectedStateId = 0;
+
+            // Calling to Load
+            LoadChurchStructureTypeByChurchId(selectedParentChurchId);
+            
+        });
+        
+        $("#NewClientChurchSelectForStateOfLocation").change(function () {
+            var stateId = $(this).val();
+            selectedStateId = stateId;
+
+            // Calling to Load
+            LoadStructureChurchParishes(selectedParentChurchId, selectedStateId, 1);
+
+        });
+        
+
+        function LoadStructureChurchParishes(parentChurchId, stateId, structureTypeId) {
+
+            $.getJSON("@Url.Action("LoadChurchStructureParishHeadQuarters", "Data")/", { churchId: parentChurchId, stateId: stateId, churchStructureTypeId: structureTypeId }, function(data) {
+                var items = "";
+                                @*$.each(data, function (i, item) {
+                    if ('@Model.StructureTypeId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });*@
+
+
+                //$("#tags").select2({
+                //    initSelection: function (element, callback) {
+                //        var data = [];
+                //        $(element.val().split(",")).each(function () {
+                //            data.push({ id: this, text: this });
+                //        });
+                //        callback(data);
+                //    }
+                //});
+
+                //// Or for single select elements:
+                //$("#select").select2({
+                //    initSelection: function (element, callback) {
+                //        var data = { id: element.val(), text: element.val() };
+                //        callback(data);
+                //    }
+                //});
+
+                var i = 0;
+                $.each(data, function(k, item) {
+
+                    var parishes = item.Parishes;
+                    items += '<optgroup label="' + item.ChurchStructureTypeName + '">';
+                    
+
+                    $.each(parishes, function (j, itemParish) {
+                        
+                        if ('@Model.ChurchStructureParishHeadQuarters' == itemParish.StructureChurchHeadQuarterParishId) {
+                            items += "<option value='" + itemParish.StructureChurchHeadQuarterParishId + "'selected='selected'>" + itemParish.ParishName + "</option>";
+                            //items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                        } else {
+                            items += '<option value="' + itemParish.StructureChurchHeadQuarterParishId + '">' + itemParish.ParishName + '</option>';
+                            //items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                        }
+
+
+                    });
+                    items += '</optgroup>';
+
+                });
+
+                $("#NewClientChurchSelectForParishHeadQuarters").html(items);
+                
+                //$('#inputID').select2('data', { id: 100, a_key: 'Lorem Ipsum' }); 636439266721723428
+
+                ("#NewClientChurchSelectForParishHeadQuarters").select2('data', { StructureChurchHeadQuarterParishId: '636439266721127023', key: 'Halleluyah Parish LR 10' });
+            });
+
+        }
+
+
+        function LoadChurchStructureTypeByChurchId(parentchurchId) {
+
+            $.getJSON('@Url.Action("GetChurchStructureTypeByChurchId", "Data")/', { churchId: parentchurchId }, function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.ClientChurchHeadQuarterChurchStructureTypeId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#NewClientChurchSelectForHeadQuarterStructure").html(items);
+            });
+        }
+
+
+        function moveform(btn, id) {
+
+            //alert(id);
+            //if ($("#createClientChurchForm").valid()) {             
+                
+            //}
+
+            $("#createClientChurchForm").validate();
+            
+            if ($("#createClientChurchForm").valid()) {             
+                    
+                $('.form-wizard').each(function () {
+                    var thisid = $(this).attr('id');
+                    if (thisid == id) {
+                        $(this).css("display", "block");
+                    } else {
+                        $(this).css("display", "none");
+                    }
+                });
+
+                var thisDataLink = $(btn).attr('data-link');
+                var formstep = 0;
+
+                $('.start-project .title ul li').each(function () {
+                    if (formstep == 0) {
+                        if (thisDataLink == $(this).attr('data-link')) {
+                            formstep = 1;
+                            $(this).addClass("current");
+                        } else {
+                            $(this).removeClass("current");
+                            $(this).addClass("done");
+                        }
+                    } else {
+                        $(this).removeClass("done");
+                        $(this).removeClass("current");
+                    }
+                });
+
+
+            }            
+            
+        }
+        
+        function moveBack(btn, id) {
+            
+            $('.form-wizard').each(function () {
+                var thisid = $(this).attr('id');
+                if (thisid == id) {
+                    $(this).css("display", "block");
+                } else {
+                    $(this).css("display", "none");
+                }
+            });
+
+            var thisDataLink = $(btn).attr('data-link');
+            var formstep = 0;
+
+            $('.start-project .title ul li').each(function () {
+                if (formstep == 0) {
+                    if (thisDataLink == $(this).attr('data-link')) {
+                        formstep = 1;
+                        $(this).addClass("current");
+                    } else {
+                        $(this).removeClass("current");
+                        $(this).addClass("done");
+                    }
+                } else {
+                    $(this).removeClass("done");
+                    $(this).removeClass("current");
+                }
+            });
+        }
+        
+
+
+        function LoadAccountTypes() {
+            $.getJSON("@Url.Action("LoadAccountType", "Data")", function (data) {
+                var items = "<option value=''>Select Account Type</option>";
+                $.each(data, function (i, accounttype) {
+
+                    if ('@Model.AccountTypeId' == accounttype.Value) {
+                        items += "<option value='" + accounttype.Value + "' selected='selected'>" + accounttype.Text + "</option>";
+                    } else {
+                        items += "<option value='" + accounttype.Value + "'>" + accounttype.Text + "</option>";
+                    }
+                });
+                $("#NewClientSelectForAccountType").html(items);
+            });
+        }
+
+        function LoadBanks() {
+            $.getJSON("@Url.Action("GetBanks", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.BankId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#NewClientSelectForBank").html(items);
+            });
+        }
+
+
+        function LoadSex() {
+            $.getJSON("@Url.Action("GetSex", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.Sex' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#Sex").html(items);
+            });
+        }
+
+        function LoadTitle() {
+
+            $.getJSON("@Url.Action("GetTitles", "Data")", function(data) {
+                var items = "<option value=''>Select Title</option>";
+                $.each(data, function(i, titletype) {
+                    if ('@Model.Title' == titletype.Value) {
+                        items += "<option value='" + titletype.Value + "' selected='selected'>" + titletype.Text + "</option>";
+                    } else {
+                        items += "<option value='" + titletype.Value + "'>" + titletype.Text + "</option>";
+                    }
+                });
+                $("#NewClientSelectForTitle").html(items);
+            });
+        }
+
+        function LoadState() {
+            $.getJSON("@Url.Action("GetStateOfLocations", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.StateOfLocationId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#NewClientChurchSelectForStateOfLocation").html(items);
+            });
+        }
+
+        function LoadParentChurch() {
+            $.getJSON("@Url.Action("GetParentChurches", "Data")", function(data) {
+                var items = "";
+                $.each(data, function(i, item) {
+                    if ('@Model.ChurchId' == item.K) {
+                        items += "<option value='" + item.K + "' selected='selected'>" + item.C + "</option>";
+                    } else {
+                        items += "<option value='" + item.K + "'>" + item.C + "</option>";
+                    }
+                });
+                $("#NewClientChurchSelectForChurch").html(items);
+            });
+        }
+
+    //$(function () {
+        //    $("#member-form").validate(
+        //        {
+        //            // Rules for form validation
+        //            rules: {
+        //                fullname: { required: true },
+        //                mobile: { required: true },
+        //                email: { required: true, email: true },
+        //                gender: { required: true },
+        //                password: { required: true, minlength: 4, maxlength: 20 },
+        //                confirm: { required: true, minlength: 4, maxlength: 20, equalTo: '#password' },
+
+        //                accountname: { required: true },
+        //                accountno: { required: true },
+        //                accounttype: { required: true },
+        //                bankname: { required: true },
+        //                captcha: { required: true },
+        //                terms: { required: true }
+        //            },
+
+        //            // Messages for form validation 
+        //            messages: {
+        //                fullname: 'Please enter your full name',
+        //                mobile: 'Please enter your mobile number',
+        //                email: {
+        //                    required: 'Please enter your email address',
+        //                    email: 'Please enter a VALID email address'
+        //                },
+        //                gender: 'Please select your gender',
+        //                password: {
+        //                    required: 'Please enter your password'
+        //                },
+        //                confirm: {
+        //                    required: 'Please enter your password one more time',
+        //                    equalTo: 'Please enter the same password as above'
+        //                },
+        //                accountname: 'Please enter your account name',
+        //                accountno: 'Please enter your account number',
+        //                accounttype: 'Please select your account type',
+        //                bankname: 'Please select your bank',
+        //                captcha: 'Please enter the code from the picture below',
+        //                terms: {
+        //                    required: 'You must agree with Terms and Conditions'
+        //                }
+        //            },
+
+        //            // Do not change code below
+        //            errorPlacement: function (error, element) {
+        //                error.insertAfter(element.parent());
+        //            }
+        //        });
+        //});
+        
+
+        //function moveform(stepObj) {
+
+            // Try
+            //$("#myForm").validate({
+            //    rules: {
+            //        lastname: "required"
+            //    }
+            //});
+
+            // New
+            //var isValid = false;
+            //$inputFields.each(function () {
+            //    isValid = $(this).valid();
+            //});
+
+            //if (!isValid)
+            //return false;
+
+
+            //stepObj.validate({
+            //    rules: {
+            //        userName: { required: true },
+            //        password: { required: true },
+            //        confirm: { required: true }
+            //    },
+
+            //    messages: {
+            //        userName: 'Please enter your full name',
+            //        password: 'Please enter your mobile number',
+            //        confirm: { required: 'Please enter your email address' },
+            //    },
+
+            //    // Do not change code below
+            //    errorPlacement: function(error, element) {
+            //        error.insertAfter(element.parent());
+            //    }
+            //});
+
+
+            //if (!stepObj.valid()) {
+            //    alert("Not Valid");
+            //}
+
+        //}
+        
+    </script>
+
+}
+
+
+
+
+

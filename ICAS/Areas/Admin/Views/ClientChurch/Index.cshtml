@@ -1,0 +1,255 @@
+﻿@model IEnumerable<ICASStacks.APIObjs.RegisteredClientChurchReportObj>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Start content -->
+<div class="content">
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="page-title-box">
+                    <h4 class="page-title float-left">Clients</h4>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+
+        <div class="row">
+            <div class="col-xl-12" style="margin-bottom: 5px">
+                <a href="@Url.Action("NewClientChurch", "ClientChurch", new { Area = "Admin" })" class="btn btn-custom waves-effect waves-light pull-right">
+                    Set Up Church
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-12">
+
+                <div class="card-box table-responsive">
+                    
+                    @{
+                        var errorMessage = ViewBag.Error as string;
+                        var successMessage = ViewBag.Reply as string;
+                        var emptyStructureErrorMessage = ViewBag.EmptyStructureError as string;
+
+
+                        if (!string.IsNullOrEmpty(emptyStructureErrorMessage) && emptyStructureErrorMessage.Length > 1)
+                        {
+
+                            <div class="row">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5>Error!</h5>
+                                    <p>@Html.Raw(emptyStructureErrorMessage)</p>
+                                </div>
+                            </div>
+
+                            @*<div class="bs-callout bs-callout-danger ">
+                                    <h4>Error!</h4>
+                                    <p>@Html.Raw(emptyStructureErrorMessage)</p>
+                                </div>*@
+                        }
+                        if (!string.IsNullOrEmpty(errorMessage) && errorMessage.Length > 1)
+                        {
+
+                            <div class="row">
+                                <div class="alert alert-info" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h5>Info!</h5>
+                                    <p>@Html.Raw(errorMessage)</p>
+                                </div>
+                            </div>
+
+                            @*<div class="bs-callout bs-callout-danger ">
+                                    <h4>Error!</h4>
+                                    <p>@Html.Raw(errorMessage)</p>
+                                </div>*@
+                        }
+                        if (!string.IsNullOrEmpty(successMessage) && successMessage.Length > 1)
+                        {
+
+                            <div class="row">
+                                <div class="alert alert-success" role="alert" style="width: 100%">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4>Sucess!</h4>
+                                    <p>@Html.Raw(successMessage)</p>
+                                </div>
+                            </div>
+                            @*<div class="bs-callout bs-callout-success ">
+                                    <h4>Sucess!</h4>
+                                    <p>@Html.Raw(successMessage)</p>
+                                </div>*@
+                        }
+                    }
+                    
+
+                    <table id="datatable-admin-users" class="table table-striped table-bordered" cellspacing="0" width="100%">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div>Name</div>
+                                </th>
+                                <th>
+                                    <div>Minister-in-Charge</div>
+                                </th>
+                                <th>
+                                    <div>Denomination</div>
+                                </th>
+                                <th>
+                                    <div>State</div>
+                                </th>
+                                <th>
+                                    <div>Phone No</div>
+                                </th>
+                                <th>
+                                    <div>Email</div>
+                                </th>
+                                <th>
+                                    <div>Actions</div>
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @{
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.Name</td>
+                                        <td>@item.Pastor</td>
+                                        <td>@item.ParentChurchShortName</td>
+                                        <td>@item.State</td>
+                                        <td>@item.PhoneNumber</td>
+                                        <td>@item.Email</td>
+                                        <td>
+                                            
+                                            <div class="btn-group m-b-20">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default btn-sm dropdown-toggle  waves-effect" data-toggle="dropdown" aria-expanded="false"> Action <span class="caret"></span> </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href='@Url.Action("ModifyClientChurch", "ClientChurch", new { id = @item.ClientChurchId })'>Edit</a>
+                                                        <a class="dropdown-item data-animation=" fadein" data-plugin="custommodal" data-overlayspeed="200" data-overlaycolor="#36404a" href='@Url.Action("AttendanceInfo", "ClientChurch", new { churchServiceAttendanceId = @item.ClientChurchId })'>
+                                                            Info
+                                                        </a>
+                                                        @*<a class="dropdown-item" href="javascript:void(0)" onclick="churchServiceAttendanceDetail(@item.ChurchServiceAttendanceId)">Info</a>*@
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<a class='btn btn-info btn-xs' href="javascript:void(0)" onclick="editRecord(@item.ClientChurchId)">
+                                                <span class="glyphicon glyphicon-edit"></span> Edit
+                                            </a>
+                                            <a href="javascript:void(0)" class="btn btn-info btn-xs" onclick="editRecord(@item.ClientChurchId)">
+                                                <span class="glyphicon glyphicon-remove"></span> Info
+                                            </a>*@
+                                        </td>
+                                    </tr>
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- container -->
+
+</div>
+<!-- content -->
+
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            //Buttons examples
+            //var table = $('#datatable-buttons').DataTable({
+            //    lengthChange: false,
+            //    buttons: ['copy', 'excel', 'pdf']
+            //});
+
+            //table.buttons().container()
+            //    .appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+        });
+
+        var todayDateTime = '@DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")';
+        var userprefs = {
+            start: moment(todayDateTime).format('DD-MM-YYYY'),
+            end: moment(todayDateTime).format('DD-MM-YYYY'),
+        };
+        var d = {
+            opens: "left",
+            locale: {
+                format: "DD-MM-YYYY"
+            },
+            startDate: userprefs.start,
+            endDate: userprefs.end
+        };
+        $('#dateRange').daterangepicker(d, function (start, end, label) {
+            alert("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            getGraph(start.format('DD-MM-YYYY'), end.format('DD-MM-YYYY'));
+        });
+
+
+        function getGraph(start, end) {
+            //show loading
+            //$(".loading-img").show();
+            //$("#transaction-chart").html("");
+            var jsonurl = '@Url.Action("GetChart", "Chart")';
+            if (typeof start != 'undefined' && typeof end != 'undefined' && start != null & end != null) {
+                jsonurl += '?start=' + encodeURIComponent(start) + '&end=' + encodeURIComponent(end);
+            } else {
+                jsonurl += '?start=' + encodeURIComponent(userprefs.start) + '&end=' + encodeURIComponent(userprefs.end);
+            }
+
+            $.getJSON(jsonurl, function (data) {
+
+            });
+
+        }
+
+
+
+
+
+        function churchServiceAttendanceDetail(churchServiceAttendanceId) {
+            if (churchServiceAttendanceId === "") return;
+            $.ajax({
+                url: '@Url.Action("AttendanceInfo", "ChurchServiceAttendance")/?churchServiceAttendanceId=' + churchServiceAttendanceId,
+                dataType: "html",
+                success: function (data) {
+                    if (!data) {
+                        location.reload();
+                        return;
+                    }
+                    $('#churchServiceAttendanceDetailModal').html(data);
+                    $('#churchServiceAttendanceDetail').modal();
+                }, complete: function () {
+
+                }
+            });
+        }
+
+    </script>
+}

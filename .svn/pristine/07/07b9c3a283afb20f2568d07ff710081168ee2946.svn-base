@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F5CF7183-82DE-4B0C-9D66-5E7AD68ECE6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ICASStacks</RootNamespace>
+    <AssemblyName>ICASStacks</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebCribs.TechCracker">
+      <HintPath>..\DLL\WebCribs.TechCracker.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIObjs\AppObj.cs" />
+    <Compile Include="APIObjs\Common.cs" />
+    <Compile Include="Common\ValidationAttributes.cs" />
+    <Compile Include="DataContract\Area.cs" />
+    <Compile Include="DataContract\Bank.cs" />
+    <Compile Include="DataContract\BioEnroll\Beneficiary.cs" />
+    <Compile Include="DataContract\BioEnroll\BeneficiaryBiometric.cs" />
+    <Compile Include="DataContract\BioEnroll\ClientHostSetting.cs" />
+    <Compile Include="DataContract\BioEnroll\LocalArea.cs" />
+    <Compile Include="DataContract\BioEnroll\Role.cs" />
+    <Compile Include="DataContract\BioEnroll\State.cs" />
+    <Compile Include="DataContract\BioEnroll\StaffUser.cs" />
+    <Compile Include="DataContract\BioEnroll\StationReg.cs" />
+    <Compile Include="DataContract\BioEnroll\UserInformation.cs" />
+    <Compile Include="DataContract\BioEnroll\UserLoginTrail.cs" />
+    <Compile Include="DataContract\BioEnroll\UserProfile.cs" />
+    <Compile Include="DataContract\Church.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchCollectionType.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchMember.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchRoleType.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchService.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchServiceAttendance.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchServiceAttendanceAttendee.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchServiceAttendanceCollection.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchServiceAttendanceRemittance.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ChurchServiceType.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ClientChurchCollection.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ClientChurchCollectionType.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ClientChurchService.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ClientChurchTreasury.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ClientRoleInChurch.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\CollectionType.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\Profession.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\ReflectionObjs\ChurchServiceAttendanceR.cs" />
+    <Compile Include="DataContract\ChurchAdministrative\RoleInChurch.cs" />
+    <Compile Include="DataContract\ChurchStructure.cs" />
+    <Compile Include="DataContract\ChurchStructureHqtr.cs" />
+    <Compile Include="DataContract\ChurchStructureType.cs" />
+    <Compile Include="DataContract\ChurchThemeSetting.cs" />
+    <Compile Include="DataContract\Client.cs" />
+    <Compile Include="DataContract\ClientAccount.cs" />
+    <Compile Include="DataContract\ClientChurch.cs" />
+    <Compile Include="DataContract\ClientChurchAccount.cs" />
+    <Compile Include="DataContract\ClientContact.cs" />
+    <Compile Include="DataContract\ClientStructureChurchDetail.cs" />
+    <Compile Include="DataContract\Common\EmailContract.cs" />
+    <Compile Include="DataContract\Diocese.cs" />
+    <Compile Include="DataContract\District.cs" />
+    <Compile Include="DataContract\Enum\EnumObj.cs" />
+    <Compile Include="DataContract\Group.cs" />
+    <Compile Include="DataContract\JSONContract\ChurchCollectionTypePercentage.cs" />
+    <Compile Include="DataContract\Parish.cs" />
+    <Compile Include="DataContract\Province.cs" />
+    <Compile Include="DataContract\Region.cs" />
+    <Compile Include="DataContract\State.cs" />
+    <Compile Include="DataContract\StateOfLocation.cs" />
+    <Compile Include="DataContract\StructureChurch.cs" />
+    <Compile Include="DataContract\ChurchStructureParishHeadQuarter.cs" />
+    <Compile Include="DataContract\StructureChurchHeadQuarterParish.cs" />
+    <Compile Include="DataContract\Zone.cs" />
+    <Compile Include="DataManager\IcasDataContext.cs" />
+    <Compile Include="DataManager\MigConfig.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataManager\MigrationManager.cs" />
+    <Compile Include="DataManager\Migration\201802171557104_migration1.cs" />
+    <Compile Include="DataManager\Migration\201802171557104_migration1.Designer.cs">
+      <DependentUpon>201802171557104_migration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataManager\Migration\Configuration.cs" />
+    <Compile Include="DataManager\ModelAssistance.cs" />
+    <Compile Include="DataManager\Utils\ExcelImport.cs" />
+    <Compile Include="Infrastructure\IcasContext.cs" />
+    <Compile Include="Infrastructure\IcasRepository.cs" />
+    <Compile Include="Infrastructure\IcasUoWork.cs" />
+    <Compile Include="Infrastructure\Contract\IIcasContext.cs" />
+    <Compile Include="Infrastructure\Contract\IIcasRepository.cs" />
+    <Compile Include="Infrastructure\Contract\IIcasUoWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\BankRepository.cs" />
+    <Compile Include="Repository\ChurchCollectionTypeRepository.cs" />
+    <Compile Include="Repository\ChurchMemberRepository.cs" />
+    <Compile Include="Repository\ChurchRepository.cs" />
+    <Compile Include="Repository\ChurchServiceAttendanceAttendeeRepository.cs" />
+    <Compile Include="Repository\ChurchServiceAttendanceClientChurchCollectionRepository.cs" />
+    <Compile Include="Repository\ChurchServiceAttendanceRemittanceRepository.cs" />
+    <Compile Include="Repository\ChurchServiceAttendanceRepository.cs" />
+    <Compile Include="Repository\ChurchServiceRepository.cs" />
+    <Compile Include="Repository\ChurchServiceTypeRepository.cs" />
+    <Compile Include="Repository\ChurchStructureHqtrRepository.cs" />
+    <Compile Include="Repository\ChurchStructureParishHeadQuarterRepository.cs" />
+    <Compile Include="Repository\ChurchStructureRepository.cs" />
+    <Compile Include="Repository\ChurchStructureTypeRepository.cs" />
+    <Compile Include="Repository\ChurchThemeSettingRepository.cs" />
+    <Compile Include="Repository\ClientChurchCollectionTypeRepository.cs" />
+    <Compile Include="Repository\ClientChurchRepository.cs" />
+    <Compile Include="Repository\ClientChurchServiceRepository.cs" />
+    <Compile Include="Repository\ClientChurchTreasuryRepository.cs" />
+    <Compile Include="Repository\ClientRepository.cs" />
+    <Compile Include="Repository\ClientStructureChurchDetailRepository.cs" />
+    <Compile Include="Repository\CollectionTypeRepository.cs" />
+    <Compile Include="Repository\Helpers\BaseExceptionHelper.cs" />
+    <Compile Include="Repository\Helpers\EncryptionHelper.cs" />
+    <Compile Include="Repository\Helpers\EntityValidatorHelper.cs" />
+    <Compile Include="Repository\Helpers\IPHelper.cs" />
+    <Compile Include="Repository\Helpers\UniqueIdentifier.cs" />
+    <Compile Include="Repository\ProfessionRepository.cs" />
+    <Compile Include="Repository\RoleInChurchRepository.cs" />
+    <Compile Include="Repository\StateOfLocationRepository.cs" />
+    <Compile Include="Repository\StructureChurchRepository.cs" />
+    <Compile Include="Repository\TerminalAPIRepository.cs" />
+    <Compile Include="StackService\ServiceChurch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="APIs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WebAdminStacks\WebAdminStacks.csproj">
+      <Project>{c88cd3d8-4b66-4067-bcb0-d513c839317f}</Project>
+      <Name>WebAdminStacks</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DataManager\Migration\201802171557104_migration1.resx">
+      <DependentUpon>201802171557104_migration1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

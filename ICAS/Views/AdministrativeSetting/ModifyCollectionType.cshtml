@@ -1,0 +1,114 @@
+﻿@model ICASStacks.APIObjs.CollectionTypeObj
+
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title">@Model.Name</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "approveClientCollectionType", data_parsley_validate = "" }))
+            {
+                
+                @Html.HiddenFor(m => m.CollectionRefId)
+                
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <label>Collection Name</label>
+                    <input placeholder="Collection Type" name="Name" id="Name" class="form-control" required="" value="@Model.Name">
+                </div>
+                
+                
+                <div class="row">
+                    
+                    <div class="col-sm-12 col-xs-12 col-md-12 col-lg-12">
+                        
+                        <div class="p-20">
+                            
+                            @for (int l = 0; l < Model.ChurchStructureTypeObjs.Count; l++)
+                            {
+                                int k = l;
+                                @Html.HiddenFor(m => Model.ChurchStructureTypeObjs[k].ChurchStructureTypeId)
+                                @Html.HiddenFor(m => Model.ChurchStructureTypeObjs[k].Name)
+                                
+                                <div class="form-group row" style="width: 100%">
+                                    <label for="@Model.ChurchStructureTypeObjs[k].ChurchStructureTypeId" class="col-sm-4 form-control-label">
+                                         @Model.ChurchStructureTypeObjs[k].Name
+                                    </label>
+                                    <div class="col-sm-7">
+                                        @Html.TextBoxFor(m => Model.ChurchStructureTypeObjs[k].Percent, new { @type = "number", @min = "0", @class = "form-control" })
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                
+                
+                
+                @*<div class="row remittance-setting-board">
+
+                    <div class="row remittance-setting-structures">
+
+                        @for (int l = 0; l < Model.ChurchStructureTypeObjs.Count; l++)
+                        {
+                            int k = l;
+                            @Html.HiddenFor(m => Model.ChurchStructureTypeObjs[k].ChurchStructureTypeId)
+                            @Html.HiddenFor(m => Model.ChurchStructureTypeObjs[k].Name)
+                            <div class="col-xs-2 col-sm-3">
+                                
+                                <div class="form-group">
+                                    <div class="col-xs-10 col-sm-8">
+                                        <label for="@Model.ChurchStructureTypeObjs[k].ChurchStructureTypeId" class="col-xs-8 form-control-label" style="font-size: 12px">
+                                            @Model.ChurchStructureTypeObjs[k].Name
+                                        </label>
+                                        @Html.TextBoxFor(m => Model.ChurchStructureTypeObjs[k].Percent, new { @type = "number", @min = "0", @class = "form-control" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+
+                </div>*@
+            <!-- end row -->
+                
+                
+                
+                
+                
+                
+                
+                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px; text-align: right">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function (e) {
+        $('#approveClientCollectionType').parsley().on('field:validated', function () {
+            var ok = $('.parsley-error').length === 0;
+            $('.bs-callout-danger').toggleClass('hidden', ok);
+
+        });
+
+    });
+</script>

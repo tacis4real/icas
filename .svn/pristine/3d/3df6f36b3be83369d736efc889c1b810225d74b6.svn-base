@@ -1,0 +1,258 @@
+﻿@using WebCribs.TechCracker.WebCribs.TechCracker
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
+        <meta name="author" content="Coderthemes">
+        <!-- App Favicon -->
+        <link rel="shortcut icon" href="~/images/favicon.ico">
+        <!-- App title -->
+        <title>ICAS - Admin Portal</title>
+        <!--Morris Chart CSS -->
+        <link rel="stylesheet" href="~/Scripts/admin/plugins/morris/morris.css">
+        <!-- Switchery css -->
+        <link href="~/Scripts/admin/plugins/switchery/switchery.min.css" rel="stylesheet" />
+        <!-- Bootstrap CSS -->
+        <link href="~/Content/admin/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <!-- App CSS -->
+        <link href="~/Content/admin/style.css" rel="stylesheet" type="text/css" />
+        <!-- Modernizr js -->
+        <script src="~/Scripts/admin/modernizr.min.js"></script>
+        
+        
+        <!-- Custom box css -->
+        <link href="~/Scripts/admin/plugins/custombox/css/custombox.min.css" rel="stylesheet">
+        
+        <!-- <!-- Plugins CSS Select 2 - Multiple-->
+        <link href="~/Scripts/admin/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css" rel="stylesheet" />
+        <link href="~/Scripts/admin/plugins/multiselect/css/multi-select.css" rel="stylesheet" />
+        <link href="~/Scripts/admin/plugins/select2/css/select2.min.css" rel="stylesheet" />
+        
+        <!--Form Wizard-->
+        <link rel="stylesheet" type="text/css" href="~/Scripts/admin/plugins/jquery.steps/demo/css/jquery.steps.css" />
+    
+        <!-- DataTables -->
+        <link href="~/Scripts/admin/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="~/Scripts/admin/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <!-- Responsive datatable examples -->
+        <link href="~/Scripts/admin/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        
+        
+        <!-- Form Wizard -->
+        <link type="text/css" rel="stylesheet" href="~/Content/wizard/font-awesome.min.css" />
+        <link type="text/css" rel="stylesheet" href="~/Content/wizard/icons.css">
+        <link rel="stylesheet" type="text/css" href="~/Content/wizard/my-styles.css">
+        <link rel="stylesheet" type="text/css" href="~/Content/wizard/responsive.css">
+        
+
+    </head>
+
+
+    <body class="fixed-left">
+        <!-- Begin page -->
+        <div id="wrapper">
+       
+            @Html.Partial("_NavPartial")
+        
+            <div class="content-page">
+
+                @RenderBody()
+
+            </div>
+            <!-- End content-page -->
+            <!-- ============================================================== -->
+            <!-- End Right content here -->
+            <!-- ============================================================== -->
+            <!-- Right Sidebar -->
+            <div class="side-bar right-bar">
+                <div class="nicescroll">
+                    <ul class="nav nav-pills nav-justified text-xs-center">
+                        <li class="nav-item">
+                            <a href="#home-2" class="nav-link active" data-toggle="tab" aria-expanded="false">
+                                Activity
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#messages-2" class="nav-link" data-toggle="tab" aria-expanded="true">
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="home-2">
+                            <div class="timeline-2">
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">5 minutes ago</small>
+                                        <p><strong><a href="#" class="text-info">John Doe</a></strong> Uploaded a photo <strong>"DSC000586.jpg"</strong></p>
+                                    </div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">30 minutes ago</small>
+                                        <p><a href="" class="text-info">Lorem</a> commented your post.</p>
+                                        <p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam laoreet tellus ut tincidunt euismod. "</em></p>
+                                    </div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">59 minutes ago</small>
+                                        <p><a href="" class="text-info">Jessi</a> attended a meeting with<a href="#" class="text-success">John Doe</a>.</p>
+                                        <p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam laoreet tellus ut tincidunt euismod. "</em></p>
+                                    </div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">1 hour ago</small>
+                                        <p><strong><a href="#" class="text-info">John Doe</a></strong>Uploaded 2 new photos</p>
+                                    </div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">3 hours ago</small>
+                                        <p><a href="" class="text-info">Lorem</a> commented your post.</p>
+                                        <p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam laoreet tellus ut tincidunt euismod. "</em></p>
+                                    </div>
+                                </div>
+                                <div class="time-item">
+                                    <div class="item-info">
+                                        <small class="text-muted">5 hours ago</small>
+                                        <p><a href="" class="text-info">Jessi</a> attended a meeting with<a href="#" class="text-success">John Doe</a>.</p>
+                                        <p><em>"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam laoreet tellus ut tincidunt euismod. "</em></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="messages-2">
+                            <div class="row m-t-10">
+                                <div class="col-8">
+                                    <h5 class="m-0">Notifications</h5>
+                                    <p class="text-muted m-b-0"><small>Do you need them?</small></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <input type="checkbox" checked data-plugin="switchery" data-color="#1bb99a" data-size="small" />
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-8">
+                                    <h5 class="m-0">API Access</h5>
+                                    <p class="m-b-0 text-muted"><small>Enable/Disable access</small></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <input type="checkbox" checked data-plugin="switchery" data-color="#1bb99a" data-size="small" />
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-8">
+                                    <h5 class="m-0">Auto Updates</h5>
+                                    <p class="m-b-0 text-muted"><small>Keep up to date</small></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <input type="checkbox" checked data-plugin="switchery" data-color="#1bb99a" data-size="small" />
+                                </div>
+                            </div>
+                            <div class="row m-t-10">
+                                <div class="col-8">
+                                    <h5 class="m-0">Online Status</h5>
+                                    <p class="m-b-0 text-muted"><small>Show your status to all</small></p>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <input type="checkbox" checked data-plugin="switchery" data-color="#1bb99a" data-size="small" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end nicescroll -->
+            </div>
+            <!-- /Right-bar -->
+            <footer class="footer text-right">
+                @DateScrutnizer.CurrentTimeStamp() © ICAS.
+            </footer>
+
+        </div>
+        <!-- END wrapper -->
+
+        <script>
+            var resizefunc = [];
+        </script>
+        <!-- jQuery  -->
+        <script src="~/Scripts/admin/jquery.min.js"></script>
+        <script src="~/Scripts/admin/popper.min.js"></script><!-- Tether for Bootstrap -->
+        <script src="~/Scripts/admin/bootstrap.min.js"></script>
+        <script src="~/Scripts/admin/detect.js"></script>
+        <script src="~/Scripts/admin/fastclick.js"></script>
+        <script src="~/Scripts/admin/jquery.blockUI.js"></script>
+        <script src="~/Scripts/admin/waves.js"></script>
+        <script src="~/Scripts/admin/jquery.nicescroll.js"></script>
+        <script src="~/Scripts/admin/jquery.scrollTo.min.js"></script>
+        <script src="~/Scripts/admin/jquery.slimscroll.js"></script>
+        <script src="~/Scripts/admin/plugins/switchery/switchery.min.js"></script>
+        <!--Morris Chart-->
+        @*<script src="~/Scripts/admin/plugins/morris/morris.min.js"></script>
+        <script src="~/Scripts/admin/plugins/raphael/raphael-min.js"></script>*@
+        
+        <!-- App js -->
+        @*<script src="~/Scripts/admin/jquery.core.js"></script>*@
+        <script src="~/Scripts/admin/jquery.app.js"></script>
+        
+
+        <!-- Counter Up  -->
+        <script src="~/Scripts/admin/plugins/waypoints/lib/jquery.waypoints.min.js"></script>
+        @*<script src="~/Scripts/admin/plugins/counterup/jquery.counterup.min.js"></script>*@
+        
+        
+        
+        <script src="~/Scripts/admin/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
+        <script type="text/javascript" src="~/Scripts/admin/plugins/multiselect/js/jquery.multi-select.js"></script>
+        <script type="text/javascript" src="~/Scripts/admin/plugins/jquery-quicksearch/jquery.quicksearch.js"></script>
+        <script src="~/Scripts/admin/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/admin/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+        <script src="~/Scripts/admin/plugins/parsleyjs/parsley.min.js"></script>
+        <!-- Autocomplete -->
+        @*<script type="text/javascript" src="~/Scripts/admin/plugins/autocomplete/jquery.mockjax.js"></script>*@
+        <script type="text/javascript" src="~/Scripts/admin/plugins/autocomplete/jquery.autocomplete.min.js"></script>
+        <script type="text/javascript" src="~/Scripts/admin/plugins/autocomplete/countries.js"></script>
+        @*<script type="text/javascript" src="~/Scripts/admin/pages/jquery.autocomplete.init.js"></script>*@
+        <script type="text/javascript" src="~/Scripts/admin/pages/jquery.formadvanced.init.js"></script>
+        
+        
+        <!-- Modal-Effect -->
+        <script src="~/Scripts/admin/plugins/custombox/js/custombox.min.js"></script>
+        <script src="~/Scripts/admin/plugins/custombox/js/legacy.min.js"></script>
+        
+
+        <!--Form Wizard-->
+        <script type="text/javascript" src="~/Scripts/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/Scripts/plugins/jquery.steps/build/jquery.steps.min.js" type="text/javascript"></script>
+        
+        <!--wizard initialization-->
+        <script src="~/Scripts/pages/jquery.wizard-init.js" type="text/javascript"></script>
+        
+    
+    
+        <!-- Required datatable js -->
+        <script src="~/Scripts/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="~/Scripts/plugins/datatables/dataTables.buttons.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/jszip.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/pdfmake.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/vfs_fonts.js"></script>
+        <script src="~/Scripts/plugins/datatables/buttons.html5.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/buttons.print.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/buttons.colVis.min.js"></script>
+        <!-- Responsive examples -->
+        <script src="~/Scripts/plugins/datatables/dataTables.responsive.min.js"></script>
+        <script src="~/Scripts/plugins/datatables/responsive.bootstrap4.min.js"></script>
+        
+        
+        <!-- Page specific js -->
+        @*<script src="~/Scripts/admin/pages/jquery.dashboard.js"></script>*@
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>
